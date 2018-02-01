@@ -29,7 +29,10 @@ class DFSMazeSolver:
             y = finish[1]
             print(finish)
             print(self.maze.maze_x, self.maze.maze_y)
-            next_move = self.solution[finish]
+            try:
+                next_move = self.solution[finish]
+            except Exception as e:
+                print(self.solution)
             final.append(next_move)
             self.maze.maze_array[next_move[0]][next_move[1]] = '@'
             self.steps += 1
@@ -60,7 +63,7 @@ class DFSMazeSolver:
         for adj in adj_points:
             x = adj[0]
             y = adj[1]
-            if(maze.maze_array[x][y] == '%' or current in self.visited):
+            if(maze.maze_array[x][y] == '%' or (x,y) in self.visited):
                 continue
             elif(x < self.maze.maze_x-1 and x >= 1 and y < self.maze.maze_y-1 and y >= 1):
                 self.solution[adj] = current
