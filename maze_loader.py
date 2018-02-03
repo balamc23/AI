@@ -27,12 +27,14 @@ class MazeLoader:
 
                 temp_array = [c for c in temp_array if c != '\n']
                 self.maze_array.append(temp_array)
+            # curr = (1,2)
+            # self.maze_array[curr[0]][curr[1]] = '@'
 
-            # print (self.start, self.end)
-            # print(self.maze_y, self.maze_x)
-            # for item in self.maze_array:
-            #     for c in item:
-            #         print(c, end=' ')
-            #     print()
+            print (self.start, self.end)
+            print(self.maze_y, self.maze_x)
+            for item in self.maze_array:
+                for c in item:
+                    print(c, end=' ')
+                print()
 
 MazeLoader('mazes/medium.txt')
