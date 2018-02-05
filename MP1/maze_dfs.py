@@ -54,25 +54,34 @@ class DFSMazeSolver:
         self.counter += 1
         maze = self.maze
         search_path = []
-        search_path.append(current)
-        while(search_path):
+        search_path.insert(0,current)
+        i = 0
+        while(search_path and i != 15):
             curr_point = search_path.pop()
-            print(curr_point)
+            print('current', curr_point)
             self.solution[curr_point] = '.'
+            # self.maze.maze_array[curr_point[0][curr_point[1]] = '.'
             x,y = curr_point[0], curr_point[1]
             if(curr_point == self.maze.end):
                 for point in search_path:
                     self.maze.solution[search_path[point]] = '.'
                 break
-            if(self.maze.maze_array[x+1][y] != '%' and self.maze.maze_array[x+1][y] not in search_path):
-                search_path.append((x+1,y))
-            if(self.maze.maze_array[x-1][y] != '%' and self.maze.maze_array[x-1][y] not in search_path):
-                search_path.append((x-1,y))
-            if(self.maze.maze_array[x][y+1] != '%' and self.maze.maze_array[x][y+1] not in search_path):
-                search_path.append((x,y+1))
-            if(self.maze.maze_array[x][y-1] != '%' and self.maze.maze_array[x][y-1] not in search_path):
-                search_path.append((x,y-1))
-            # print(search_path)
+            if(self.maze.maze_array[x+1][y] != '%' and self.maze.maze_array[x+1][y] not in self.visited):
+                search_path.insert(0,(x+1,y))
+                self.visited.add((x+1,y))
+            if(self.maze.maze_array[x-1][y] != '%' and self.maze.maze_array[x-1][y] not in self.visited):
+                search_path.insert(0,(x-1,y))
+                self.visited.add((x-1,y))
+            if(self.maze.maze_array[x][y+1] != '%' and self.maze.maze_array[x][y+1] not in self.visited):
+                search_path.insert(0,(x,y+1))
+                self.visited.add((x,y+1))
+            if(self.maze.maze_array[x][y-1] != '%' and self.maze.maze_array[x][y-1] not in self.visited):
+                search_path.insert(0,(x,y-1))
+                self.visited.add((x,y-1))
+            print('search', search_path)
+            print('visited', self.visited)
+            print('solution', self.solution)
+            i +=1
             # break
 
         # neighbors = []
