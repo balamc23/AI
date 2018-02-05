@@ -14,14 +14,14 @@ class DFSMazeSolver:
 
     def solve_maze(self):
         self.find_dfs(self.maze.start, None)
-        point = self.maze.end
-        # for coord in self.solution.keys():
-        #     self.maze.maze_array[coord[0]][coord[1]] = '.'
-        while(point != self.maze.start):
-            print(point[0], point[1])
-            self.maze.maze_array[point[0]][point[1]] = '.'
-            point = self.solution[point[0]][point[1]]
-            print(point)
+        end_point = self.maze.end
+        for coord in self.solution.keys():
+            self.maze.maze_array[coord[0]][coord[1]] = '.'
+        # while(end_point != self.maze.start):
+        #     print(end_point[0], end_point[1])
+        #     self.maze.maze_array[end_point[0]][end_point[1]] = '.'
+        #     end_point = self.solution[end_point[0]][end_point[1]]
+        #     print(end_point)
         for item in self.maze.maze_array:
             for c in item:
                 print(c, end=' ')
@@ -35,7 +35,7 @@ class DFSMazeSolver:
         i = 0
         while(search_path):
             curr_point = search_path.pop()
-            print('current', curr_point)
+            # print('current', curr_point)
             self.solution[curr_point] = prev
             prev = curr_point
             x,y = curr_point[0], curr_point[1]
@@ -59,7 +59,7 @@ class DFSMazeSolver:
                 curr_point = (x,y-1)
             # print('search', search_path)
             # print('visited', self.visited)
-            print('solution', self.solution)
+            # print('solution', self.solution, '\n')
             i +=1
             # break
             # print(self.solution)
