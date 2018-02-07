@@ -95,16 +95,16 @@ dfs.solve_maze()
 t = time.clock() - t0
 print('it took this long ', t)
 
-m = MazeLoader(MazeLoader.big)
-dfs = DFSMazeSolver(m)
-t0 = time.clock()
-dfs.solve_maze()
-t = time.clock() - t0
-print('it took this long ', t)
-
-m = MazeLoader(MazeLoader.last)
-dfs = DFSMazeSolver(m)
-t0 = time.clock()
-dfs.solve_maze()
-t = time.clock() - t0
-print('it took this long ', t)
+# m = MazeLoader(MazeLoader.big)
+# dfs = DFSMazeSolver(m)
+# t0 = time.clock()
+# dfs.solve_maze()
+# t = time.clock() - t0
+# print('it took this long ', t)
+#
+# m = MazeLoader(MazeLoader.last)
+# dfs = DFSMazeSolver(m)
+# t0 = time.clock()
+# dfs.solve_maze()
+# t = time.clock() - t0
+# print('it took this long ', t)
