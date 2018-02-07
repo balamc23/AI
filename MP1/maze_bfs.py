@@ -48,6 +48,7 @@ class BFSMazeSolver:
 					
 		# Set end as top node
 		solution.append(draw_solution[self.maze.end])
+
 		#loop to add parent node
 		i =1
 		while solution[i-1] != self.maze.start:
@@ -56,18 +57,17 @@ class BFSMazeSolver:
 			solution_set.add(solution[i])
 			i+=1 	
 
-		
-		i,j = 0,0
+		point = self.maze.end
+		while(point != self.maze.start):
+			point = draw_solution[point]
+			self.maze.maze_array[point[0]][point[1]] = '.'
+		self.maze.maze_array[start[0]][start[1]] = "P"
+
 		for item in self.maze.maze_array:
-			for c in item:
-				if((i,j) in solution_set):
-					print(".", end= ' ')
-				else:
-					print(c, end = ' ')
-				j += 1
-			j = 0
-			i += 1
+			for c in item:	
+				print(c, end = ' ')
 			print()
+
 		print(steps, "nodes expanded")
 		print(len(solution), "steps in solution")
 		print((ts2-ts), "Seconds")
