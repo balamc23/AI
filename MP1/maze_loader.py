@@ -15,6 +15,8 @@ class MazeLoader:
             maze_lines = m.readlines()
             self.maze_x = len(maze_lines)
             self.maze_y = len(maze_lines[0])
+            self.width = len(maze_lines[0])
+            self.height = len(maze_lines)
             for i in range(len(maze_lines)):
                 temp_array = []
                 for j in range(len(maze_lines[i])):
@@ -28,11 +30,25 @@ class MazeLoader:
                 temp_array = [c for c in temp_array if c != '\n']
                 self.maze_array.append(temp_array)
 
-            # print (self.start, self.end)
-            # print(self.maze_y, self.maze_x)
+            print (self.start, self.end)
+            for item in self.maze_array:
+                for c in item:
+                    print(c, end=' ')
+                print()
+                
             # for item in self.maze_array:
             #     for c in item:
-            #         print(c, end=' ')
+            #         if(c == " "):
+            #             print("*", end = ' ')
+            #         else:
+            #             print(c, end=' ')
+            #     print()
+            # for i in range(len(self.maze_array)):
+            #     for j in range(len(self.maze_array[i])):
+            #         if(self.maze_array[i][j] == " "):
+            #             print("*", end = ' ')
+            #         else:
+            #             print(self.maze_array[i][j], end=' ')
             #     print()
 
-MazeLoader('mazes/medium.txt')
+#MazeLoader(MazeLoader.medium)
