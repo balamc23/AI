@@ -26,7 +26,7 @@ class MazeLoader:
                     if curr_char == 'P':
                         self.start = (i, j)
                     if curr_char == '.':
-                        self.end.append(i, j)
+                        self.end.append((i, j))
                         self.num_dots += 1
 
                 temp_array = [c for c in temp_array if c != '\n']
