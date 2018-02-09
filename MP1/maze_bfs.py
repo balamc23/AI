@@ -75,7 +75,7 @@ class BFSMazeSolver:
 
 	def get_neighbors(self, cell):
 		x, y = cell[0], cell[1]
-		return [
+		return [ 
 			(x + 1, y),
 			(x - 1, y),
 			(x, y + 1),
