@@ -22,26 +22,19 @@ class ASTARMazeSolver:
 
     def solve_maze(self):
         self.astar(self.maze, self.maze.start, self.maze.end)
-        # sol_arr = []
-        # sol_set = set()
         point = self.maze.end
-        #for coord in self.solution.keys():
-        #    self.maze.maze_array[coord[0]][coord[1]] = '.'
-        # print('solution', self.solution, '\n')
         self.solution.pop(0)
         self.solution.pop(0)
         for i in self.solution:
             (x,y) = i
             self.maze.maze_array[x][y] = '.'
         self.maze.maze_array[self.maze.start[0]][self.maze.start[1]] = 'P'
-        # sol_arr.append(self.solution[self.maze.end])
-        i,j = 0,0
         for item in self.maze.maze_array:
             for c in item:
                 print(c, end= ' ')
             print()
         print('The number of nodes explored is: ', self.steps)
-        print('The number of steps taken is: ' , len(self.solution))
+        print('The number of steps taken is: ' , len(self.solution)-1)
 
     # def printer(self, solution):
     #     for i in range(len(self.maze.maze_array)):
@@ -66,6 +59,7 @@ class ASTARMazeSolver:
             if curr_point[1] == end:
                 self.solution = deepcopy(curr_point[3])
                 self.solution.append((curr_point[1])) # adding current point to saved solution
+                print('Cost', curr_cost)
                 return
             x,y = curr_point[1][0], curr_point[1][1]
 
@@ -101,7 +95,7 @@ t0 = time.clock()
 astar.solve_maze()
 t = time.clock() - t0
 print('it took this long ', t)
-#
+
 # m = MazeLoader('mazes/bigmaze.txt')
 # astar = ASTARMazeSolver(m)
 # t0 = time.clock()
