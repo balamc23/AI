@@ -30,12 +30,12 @@ class MazeLoader:
                 temp_array = [c for c in temp_array if c != '\n']
                 self.maze_array.append(temp_array)
 
-            print (self.start, self.end)
-            for item in self.maze_array:
-                for c in item:
-                    print(c, end=' ')
-                print()
-                
+            # print (self.start, self.end)
+            # for item in self.maze_array:
+            #     for c in item:
+            #         print(c, end=' ')
+            #     print()
+
             # for item in self.maze_array:
             #     for c in item:
             #         if(c == " "):
