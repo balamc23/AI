@@ -1,8 +1,8 @@
 class MazeLoader:
 
-    medium = 'mazes/medium.txt'
-    big = 'mazes/bigmaze.txt'
-    last = 'mazes/openmaze.txt'
+    medium = 'mazes_suboptimal/mediumSearch.txt'
+    big = 'mazes_suboptimal/smallSearch.txt'
+    last = 'mazes_suboptimal/tinySearch.txt'
 
     def __init__(self, maze):
         self.maze_array = []
