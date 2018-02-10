@@ -85,6 +85,10 @@ class ASTARMazeSolver:
                 self.solution.append((curr_point[1])) # adding current point to saved solution
                 print('solution: ', self.solution)
                 # print('Cost', curr_cost)
+                while(len(pq) != 0):
+                    heapq.heappop(pq)
+
+                self.visited.clear()  
                 if(sol_found == self.maze.num_dots):
                     return
                 #return
@@ -129,14 +133,14 @@ astar.solve_maze()
 t = time.clock() - t0
 print('it took this long ', t)
 
-# m = MazeLoader('mazes/bigmaze.txt')
-# astar = ASTARMazeSolver(m)
+# m2 = MazeLoader('mazes_suboptimal/smallSearch.txt')
+# astar = ASTARMazeSolver(m2)
 # t0 = time.clock()
 # astar.solve_maze()
 # t = time.clock() - t0
 # print('it took this long ', t)
-#
-# m = MazeLoader('mazes/openmaze.txt')
+# #
+# m = MazeLoader('mazes_suboptimal/mediumSeach.txt')
 # astar = ASTARMazeSolver(m)
 # t0 = time.clock()
 # astar.solve_maze()
