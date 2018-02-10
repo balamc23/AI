@@ -23,6 +23,8 @@ class ASTARMazeSolver:
         (x2, y2) = y
         return abs(x1 - x2) + abs(y1 - y2)
 
+    # def better_h():
+
     def solve_maze(self):
         # print('list of dots', self.maze.end)
         # print('num of dots', self.maze.num_dots)
@@ -65,7 +67,7 @@ class ASTARMazeSolver:
             # print('first', first, 'i', self.maze.end[i])
             x = self.manhattan_distance(first, self.maze.end[i])
             d_.append((x,self.maze.end[i]))
-            # first = self.maze.end[i]
+            first = self.maze.end[i]
         d_ = sorted(d_, key = lambda x: x[0])
         # print('list', d_, end = ' ')
         time.sleep(0.05)
@@ -89,7 +91,7 @@ class ASTARMazeSolver:
                 # print('******', curr_point[1])
                 self.maze.maze_array[curr_point[1][0]][curr_point[1][1]] = alpha[sol_found]
                 # print("Solution Found")
-                d_.pop(0)
+                print(d_.pop(0))
                 self.solution = deepcopy(curr_point[3])
                 self.solution.append((curr_point[1])) # adding current point to saved solution
                 # print('printing' , sol_found, curr_point[1])
@@ -138,12 +140,12 @@ class ASTARMazeSolver:
                #d_.pop(0)
 
 
-m = MazeLoader('mazes_suboptimal/tinySearch.txt')
-astar = ASTARMazeSolver(m)
-t0 = time.clock()
-astar.solve_maze()
-t = time.clock() - t0
-print('it took this long ', t)
+# m = MazeLoader('mazes_suboptimal/tinySearch.txt')
+# astar = ASTARMazeSolver(m)
+# t0 = time.clock()
+# astar.solve_maze()
+# t = time.clock() - t0
+# print('it took this long ', t)
 
 # m2 = MazeLoader('mazes_suboptimal/smallSearch.txt')
 # astar = ASTARMazeSolver(m2)
@@ -152,9 +154,9 @@ print('it took this long ', t)
 # t = time.clock() - t0
 # print('it took this long ', t)
 # #
-# m = MazeLoader('mazes_suboptimal/mediumSearch.txt')
-# astar = ASTARMazeSolver(m)
-# t0 = time.clock()
-# astar.solve_maze()
-# t = time.clock() - t0
-# print('it took this long ', t)
+m = MazeLoader('mazes_suboptimal/mediumSearch.txt')
+astar = ASTARMazeSolver(m)
+t0 = time.clock()
+astar.solve_maze()
+t = time.clock() - t0
+print('it took this long ', t)
