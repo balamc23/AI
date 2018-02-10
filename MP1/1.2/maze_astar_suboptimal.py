@@ -26,7 +26,7 @@ class ASTARMazeSolver:
         # print('list of dots', self.maze.end)
         # print('num of dots', self.maze.num_dots)
         self.astar(self.maze, self.maze.start, self.maze.end)
-        point = self.maze.end
+        #point = self.maze.endpoints
         self.solution.pop(0)
         self.solution.pop(0)
         print('solution', self.solution)
@@ -53,7 +53,7 @@ class ASTARMazeSolver:
     def astar(self, maze, start, end):
         first = start
         d_ = []
-        self.maze.end.append(start)
+        #self.maze.end.append(start)
         # print(self.maze.end)
         for i in range(len(self.maze.end)):
             # print('first', first, 'i', self.maze.end[i])
@@ -65,20 +65,29 @@ class ASTARMazeSolver:
         # print('end', end)
         pq = []
         heapq.heappush(pq, (self.manhattan_distance(start, d_[0][1]), start, 0, list(start)))
-        d_.pop(0)
+        #d_.pop(0)
         cum_cost = {}
         cum_cost[start] = 0
+        sol_found = 0
+        sol_found_set = set()
 
         while(len(pq) != 0 and len(d_) != 0):
-            print('list', d_, end = ' ')
+           # print('list', d_, end = ' ')
             self.steps += 1
             curr_point = heapq.heappop(pq)
             curr_cost = curr_point[2] #taking third value, cost, of pq tuple
-            if curr_point[1] == end:
+            if curr_point[1] in end and curr_point[1] not in sol_found_set:
+                sol_found += 1
+                sol_found_set.add(curr_point[1])
+                print("Solution Found")
+                d_.pop(0)
                 self.solution = deepcopy(curr_point[3])
                 self.solution.append((curr_point[1])) # adding current point to saved solution
+                print('solution: ', self.solution)
                 # print('Cost', curr_cost)
-                return
+                if(sol_found == self.maze.num_dots):
+                    return
+                #return
             x,y = curr_point[1][0], curr_point[1][1]
             # print(x,y)
 
@@ -92,25 +101,25 @@ class ASTARMazeSolver:
                 curr_sol_1 = deepcopy(self.solution)
                 temp_tuple_1 = (d, (x-1, y), curr_cost + 1, curr_sol_1)
                 heapq.heappush(pq, temp_tuple_1)
-                d_.pop(0)
+                #d_.pop(0)
             if(self.maze.maze_array[x+1][y] != '%' and (x+1,y) not in self.visited):
                 d = self.manhattan_distance((x+1,y), d_[0][1]) + curr_cost + 1
                 curr_sol_2 = deepcopy(self.solution)
                 temp_tuple_2 = (d, (x+1, y), curr_cost + 1, curr_sol_2)
                 heapq.heappush(pq, temp_tuple_2)
-                d_.pop(0)
+                #d_.pop(0)
             if(self.maze.maze_array[x][y+1] != '%' and (x,y+1) not in self.visited):
                 d = self.manhattan_distance((x,y+1), d_[0][1]) + curr_cost + 1
                 curr_sol_3 = deepcopy(self.solution)
                 temp_tuple_3 = (d, (x, y+1), curr_cost + 1, curr_sol_3)
                 heapq.heappush(pq, temp_tuple_3)
-                d_.pop(0)
+                #d_.pop(0)
             if(self.maze.maze_array[x][y-1] != '%' and (x,y-1) not in self.visited):
                 d = self.manhattan_distance((x,y-1), d_[0][1]) + curr_cost + 1
                 curr_sol_4 = deepcopy(self.solution)
                 temp_tuple_4 = (d, (x, y-1), curr_cost + 1, curr_sol_4)
                 heapq.heappush(pq, temp_tuple_4)
-                d_.pop(0)
+               #d_.pop(0)
 
 
 m = MazeLoader('mazes_suboptimal/tinySearch.txt')
