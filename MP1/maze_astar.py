@@ -68,7 +68,7 @@ class ASTARMazeSolver:
             self.solution = deepcopy(curr_point[3])
             self.solution.append((curr_point[1])) # adding current point to saved solution
             self.visited.add(curr_point[1]) # add tuple to visited
-            #self.printer(self.solution)
+            self.printer(self.solution)
             time.sleep(0.05)
             if(self.maze.maze_array[x-1][y] != '%' and (x-1,y) not in self.visited):
                 d = self.manhattan_distance((x-1,y), end) + curr_cost + 1
@@ -110,12 +110,12 @@ class ASTARMazeSolver:
         visitited = set()
         maze_done  = 0
         nodes = 0
-        
         while(len(q) != 0):
             curr_node= heapq.heappop(q)
             curr_pos = curr_node[1]
             curr_cost = curr_node[2]
             nodes +=1
+
             neighbors = self.get_neighbors(curr_pos)
             for pos in neighbors:
                 x, y = pos[0], pos[1]
@@ -135,7 +135,7 @@ class ASTARMazeSolver:
                     break
             if(maze_done):
                 break
-                        
+
 
         # Set end as top node
         solution.append(draw_solution[end])
@@ -145,19 +145,23 @@ class ASTARMazeSolver:
             dict_index = solution[i-1]
             solution.append(draw_solution[dict_index])
             solution_set.add(solution[i])
-            i+=1    
+            i+=1
 
-        
+
         point = end
+        # self.printer(solution)
+        # time.sleep(0.05)
         while(point != self.maze.start):
             point = draw_solution[point]
             self.maze.maze_array[point[0]][point[1]] = '.'
         self.maze.maze_array[start[0]][start[1]] = "P"
 
         for item in self.maze.maze_array:
-            for c in item:  
+            for c in item:
                 print(c, end = ' ')
             print()
+        print(solution)
+
 
         print(nodes, "nodes expanded")
         print(len(solution), "steps in path")
@@ -201,18 +205,16 @@ astar.astar2()
 t = time.clock() - t0
 print('it took this long ', t)
 
-m = MazeLoader('mazes/bigmaze.txt')
-astar = ASTARMazeSolver(m)
-t0 = time.clock()
-astar.astar2()
-t = time.clock() - t0
-print('it took this long ', t)
-
-m = MazeLoader('mazes/openmaze.txt')
-astar = ASTARMazeSolver(m)
-t0 = time.clock()
-astar.astar2()
-t = time.clock() - t0
-print('it took this long ', t)
-
-
+# m = MazeLoader('mazes/bigmaze.txt')
+# astar = ASTARMazeSolver(m)
+# t0 = time.clock()
+# astar.astar2()
+# t = time.clock() - t0
+# print('it took this long ', t)
+#
+# m = MazeLoader('mazes/openmaze.txt')
+# astar = ASTARMazeSolver(m)
+# t0 = time.clock()
+# astar.astar2()
+# t = time.clock() - t0
+# print('it took this long ', t)
