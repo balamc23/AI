@@ -6,15 +6,14 @@ from operator import itemgetter
 import string
 
 class MultiDotSolver:
-
-	 def __init__(self, maze):
-     	if(maze is None):
-            print('Error: No maze passed in')
-        self.maze = maze
-        self.visited = set()
-        self.solution = list()
-        self.steps = 0
-        self.counter = 0
+	def __init__(self,maze):
+		if(maze is None):
+			print('Error: No maze is passed in')
+		self.maze = maze
+		self.visited = set()
+		self.solution = list()
+		self.steps = 0
+		self.counter = 0
 
     def manhattan_distance(self, x, y):
         (x1, y1) = x
