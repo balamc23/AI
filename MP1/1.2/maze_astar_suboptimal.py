@@ -23,11 +23,9 @@ class ASTARMazeSolver:
         (x2, y2) = y
         return abs(x1 - x2) + abs(y1 - y2)
 
-    # def better_h():
-
     def solve_maze(self):
         # print('list of dots', self.maze.end)
-        print('num of dots', self.maze.num_dots)
+#        print('num of dots', self.maze.num_dots)
         self.astar(self.maze, self.maze.start, self.maze.end)
         #point = self.maze.endpoints
         self.solution.pop(0)
@@ -41,28 +39,19 @@ class ASTARMazeSolver:
             for c in item:
                 print(c, end= ' ')
             print()
-        print('The number of nodes explored is: ', self.steps)
-        print('The number of steps taken is: ' , len(self.solution)-1)
-
-    # def printer(self, solution):
-    #     for i in range(len(self.maze.maze_array)):
-    #         for j in range(len(self.maze.maze_array[0])):
-    #             if (i,j) in solution:
-    #                 print('.', end = ' ')
-    #             else:
-    #                 print(self.maze.maze_array[i][j],end=' ')
-    #         print()
+        print('Number of nodes expanded: ', self.steps)
+        print('Total path cost: ' , len(self.solution)-1)
 
     def astar(self, maze, start, end):
-        print('dim', self.maze.width, self.maze.height)
+#        print('dim', self.maze.width, self.maze.height)
         alphabet = dict(zip(string.ascii_lowercase, range(1,27)))
         alpha = dict (zip(alphabet.values(),alphabet.keys()))
-        print('alpha' , alpha)
+#        print('alpha' , alpha)
         abcs = {}
         first = start
         d_ = []
         #self.maze.end.append(start)
-        print(self.maze.end)
+#        print(self.maze.end)
         for i in range(len(self.maze.end)):
             # print('first', first, 'i', self.maze.end[i])
             x = self.manhattan_distance(first, self.maze.end[i])
@@ -145,7 +134,7 @@ dfs = ASTARMazeSolver(m)
 t0 = time.clock()
 dfs.solve_maze()
 t = time.clock() - t0
-print('it took this long ', t)
+print("Runtime in seconds: ", t)
 
 # m = MazeLoader('mazes_suboptimal/tinySearch.txt')
 # astar = ASTARMazeSolver(m)

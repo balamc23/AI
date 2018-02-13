@@ -58,7 +58,6 @@ class ASTARMazeSolver:
             print(curr_point[1])
             curr_cost = curr_point[2] #taking third value, cost, of pq tuple
             if curr_point[1] == end:
-                print("found solution")
                 self.solution = deepcopy(curr_point[3])
                 self.solution.append((curr_point[1])) # adding current point to saved solution
                 print('Cost', curr_cost)
@@ -128,7 +127,6 @@ class ASTARMazeSolver:
                         draw_solution[pos] =curr_pos
                         visitited.add(pos)
                 if(self.maze.maze_array[x][y] == "."):
-                    print("found solution")
                     ts2 = time.time()
                     draw_solution[pos] =curr_pos
                     maze_done =1
@@ -160,13 +158,11 @@ class ASTARMazeSolver:
             for c in item:
                 print(c, end = ' ')
             print()
-        print(solution)
+#print(solution)
 
 
-        print(nodes, "nodes expanded")
-        print(len(solution), "steps in path")
-        print((ts2-ts), "Seconds")
-        print()
+        print("Total path cost: ", len(solution))
+        print("Number of nodes expanded: ", nodes)
 
     def get_neighbors(self, cell):
         x, y = cell[0], cell[1]
@@ -177,44 +173,24 @@ class ASTARMazeSolver:
             (x, y - 1),
         ]
 
-# m = MazeLoader('mazes/medium.txt')
-# astar = ASTARMazeSolver(m)
-# t0 = time.clock()
-# astar.solve_maze()
-# t = time.clock() - t0
-# print('it took this long ', t)
-
-# m = MazeLoader('mazes/bigmaze.txt')
-# astar = ASTARMazeSolver(m)
-# t0 = time.clock()
-# astar.solve_maze()
-# t = time.clock() - t0
-# print('it took this long ', t)
-#
-# m = MazeLoader('mazes/openmaze.txt')
-# astar = ASTARMazeSolver(m)
-# t0 = time.clock()
-# astar.solve_maze()
-# t = time.clock() - t0
-# print('it took this long ', t)
-
 m = MazeLoader('mazes/medium.txt')
 astar = ASTARMazeSolver(m)
 t0 = time.clock()
 astar.astar2()
 t = time.clock() - t0
-print('it took this long ', t)
+print("Runtime in seconds: ", t)
 
-# m = MazeLoader('mazes/bigmaze.txt')
-# astar = ASTARMazeSolver(m)
-# t0 = time.clock()
-# astar.astar2()
-# t = time.clock() - t0
-# print('it took this long ', t)
-#
-# m = MazeLoader('mazes/openmaze.txt')
-# astar = ASTARMazeSolver(m)
-# t0 = time.clock()
-# astar.astar2()
-# t = time.clock() - t0
-# print('it took this long ', t)
+m = MazeLoader('mazes/bigmaze.txt')
+astar = ASTARMazeSolver(m)
+t0 = time.clock()
+astar.astar2()
+t = time.clock() - t0
+print("Runtime in seconds: ", t)
+
+m = MazeLoader('mazes/openmaze.txt')
+astar = ASTARMazeSolver(m)
+t0 = time.clock()
+astar.astar2()
+t = time.clock() - t0
+print("Runtime in seconds: ", t)
+

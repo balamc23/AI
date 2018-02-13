@@ -35,8 +35,8 @@ class MultiDotSolver:
             for c in item:
                 print(c, end= ' ')
             print()
-        print('The number of nodes explored is: ', self.steps)
-        print('The number of steps taken is: ' , self.length)
+        print('Total path cost: ' , self.length)
+        print('The number of nodes expanded: ', self.steps)
 
 
 
@@ -103,7 +103,6 @@ class MultiDotSolver:
                         draw_solution[pos] =curr_pos
                         visitited.add(pos)
                 if(self.maze.maze_array[x][y] == "."):
-                    #print("found solution")
                     d = self.manhattan_distance(pos,end)
                     total_cost = d + curr_cost + 1
                     ts2 = time.time()
@@ -131,19 +130,19 @@ astar = MultiDotSolver(m)
 t0 = time.clock()
 astar.solve_maze()
 t = time.clock() - t0
-print('it took this long ', t)
+print("Runtime in seconds: ", t)
 
 m = MazeLoader('mazes_suboptimal/smallSearch.txt')
 astar = MultiDotSolver(m)
 t0 = time.clock()
 astar.solve_maze()
 t = time.clock() - t0
-print('it took this long ', t)
+print("Runtime in seconds: ", t)
 
 m = MazeLoader('mazes_suboptimal/mediumSearch.txt')
 astar = MultiDotSolver(m)
 t0 = time.clock()
 astar.solve_maze()
 t = time.clock() - t0
-print('it took this long ', t)
+print("Runtime in seconds: ", t)
 
