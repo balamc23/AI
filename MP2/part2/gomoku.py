@@ -23,6 +23,7 @@ class Gomoku:
         self.stones = {}
         self.stones['r'] = []
         self.stones['b'] = []
+        self.gameover = 0
 
     def print_board(self):
         for row in self.board:
@@ -50,10 +51,12 @@ class Gomoku:
                         if(value == '.'):
                             self.stones[color].append((y_start, x_start - 1))
                             self.board[y_start][x_start - 1] = alphabet[color][len(self.stones[color])-1]
+                            self.gameover = 1
                             return
                         elif(value2 == '.'):
                             self.stones[color].append((y_end, x_end + 1))
                             self.board[y_end][x_end + 1] = alphabet[color][len(self.stones[color])-1]
+                            self.gameover = 1
                             return
                     elif(direction == 'U'):
                         # check down side first then up
@@ -62,10 +65,12 @@ class Gomoku:
                         if(value == '.'):
                             self.stones[color].append((y_start + 1, x_start))
                             self.board[y_start + 1][x_start] = alphabet[color][len(self.stones[color])-1]
+                            self.gameover = 1
                             return
                         elif(value2 == '.'):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end - 1][x_end] = alphabet[color][len(self.stones[color])-1]
+                            self.gameover = 1
                             return
                     elif(direction == 'DL'):
                         # check left down side first then up right
@@ -74,10 +79,12 @@ class Gomoku:
                         if(value == '.'):
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start + 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
+                            self.gameover = 1
                             return
                         elif(value2 == '.'):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end - 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
+                            self.gameover = 1
                             return
                     elif(direction == 'UL'):
                         # check left up side first then down right
@@ -86,10 +93,12 @@ class Gomoku:
                         if(value == '.'):
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start - 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
+                            self.gameover = 1
                             return
                         elif(value2 == '.'):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end + 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
+                            self.gameover = 1
                             return
 
         #Rule 2. Check opponent for chains of 4 
@@ -209,7 +218,7 @@ class Gomoku:
                                         stone_count += 1
                                     else:
                                         break
-                                else:
+                                elif(color == 'b'):
                                     if(value.isupper()):
                                         stone_count += 1
                                     else:
@@ -256,7 +265,7 @@ class Gomoku:
         best_winners.sort()
         closest_x = best_winners[0][0]
         closest_y = 7
-        start_point = (best_winners[0][1],best_winners[2] )
+        start_point = (best_winners[0][1],best_winners[0][2] )
         for item in best_winners:
             if(item[0] > closest_x):
                 break
@@ -269,10 +278,10 @@ class Gomoku:
         X,Y = start_point[0][0], start_point[0][1]
         v, direct  = self.board[start_point[0][1]][start_point[0][0]], start_point[1]
         while(v != '.'):
+            print(X,Y, v)
             if(direct =='L'):
                 #go right
                 X = X + 1
-                place_point = (X, Y)
             elif(direct == 'DL'):
                 #down-left
                 X = X -1
@@ -619,8 +628,21 @@ g.stones['r'] = [(5,1)]
 
 g.print_board()
 
-g.reflex('r')
-g.reflex('b')
+turn = 'r'
+while(not g.gameover):
+    g.reflex(turn)
+    print()
+    g.print_board()
+    if(turn == 'r'):
+        turn = 'b'
+    elif(turn == 'b'):
+        turn = 'r'
+    if(len(g.stones['r'])+ len(g.stones['b']) == 49):
+        g.gameover = 1
+
+
+# g.reflex('r')
+# g.reflex('b')
 # g.reflex('r')
 # g.reflex('b')
 # g.reflex('r')
