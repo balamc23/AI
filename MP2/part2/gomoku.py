@@ -43,17 +43,18 @@ class Gomoku:
                 x_start, y_start, x_end, y_end = start[0], start[1], end[0], end[1]
                 # print('Info', x_start, y_start, x_end, y_end, point)
                 if(length == 4):
+                    print("Rule 1")
                     if(direction == 'L'):
                         # print('End, x_end', end, x_end)
                         # check left side first then right
                         value = self.board[y_start][x_start - 1]
                         value2 = self.board[y_end][x_end + 1]
-                        if(value == '.'):
+                        if(value == '.' and x_start -1 > -1):
                             self.stones[color].append((y_start, x_start - 1))
                             self.board[y_start][x_start - 1] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
                             return (y_start,x_start - 1), direction
-                        elif(value2 == '.'):
+                        elif(value2 == '.' and x_end +1 < 7):
                             self.stones[color].append((y_end, x_end + 1))
                             self.board[y_end][x_end + 1] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
@@ -62,12 +63,12 @@ class Gomoku:
                         # check down side first then up
                         value = self.board[y_start + 1][x_start]
                         value2 = self.board[y_end -1 ][x_end]
-                        if(value == '.'):
+                        if(value == '.' and y_start +1 < 7):
                             self.stones[color].append((y_start + 1, x_start))
                             self.board[y_start + 1][x_start] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
                             return (y_start +1,x_start), direction
-                        elif(value2 == '.'):
+                        elif(value2 == '.'and y_end -1 > -1):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end - 1][x_end] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
@@ -76,12 +77,12 @@ class Gomoku:
                         # check left down side first then up right
                         value = self.board[y_start + 1][x_start -1]
                         value2 = self.board[y_end - 1 ][x_end + 1]
-                        if(value == '.'):
+                        if(value == '.' and y_start +1 < 7 and x_start-1 > -1):
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start + 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
                             return (y_start +1,x_start -1 ), direction
-                        elif(value2 == '.'):
+                        elif(value2 == '.' and y_end -1 > -1 and x_end +1 < 7):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end - 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
@@ -90,12 +91,12 @@ class Gomoku:
                         # check left up side first then down right
                         value = self.board[y_start - 1][x_start -1]
                         value2 = self.board[y_end + 1 ][x_end + 1]
-                        if(value == '.'):
+                        if(value == '.' and y_start-1 > -1 and x_start -1 > -1):
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start - 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
                             return (y_start  -1,x_start - 1 ), direction
-                        elif(value2 == '.'):
+                        elif(value2 == '.'and y_end +1 < 7 and x_end +1 < 7):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end + 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
@@ -108,16 +109,17 @@ class Gomoku:
                 # print(point, length, d, opponent)
                 x_start, y_start, x_end, y_end = start[0], start[1], end[0], end[1]
                 if(length == 4):
+                    print("Rule 2")
                     if(direction == 'L'):
                         # print("printing ...")
                         # check left side first then right
                         value = self.board[y_start][x_start - 1]
                         value2 = self.board[y_end][x_end + 1]
-                        if(value == '.'):
+                        if(value == '.' and x_start -1 > -1):
                             self.stones[color].append((y_start, x_start - 1))
                             self.board[y_start][x_start - 1] = alphabet[color][len(self.stones[color])-1]
                             return (y_start,x_start - 1), direction
-                        elif(value2 == '.'):
+                        elif(value2 == '.' and x_end +1 < 7):
                             self.stones[color].append((y_end, x_end + 1))
                             self.board[y_end][x_end + 1] = alphabet[color][len(self.stones[color])-1]
                             return (y_end,x_end + 1), direction
@@ -125,11 +127,11 @@ class Gomoku:
                         # check down side first then up
                         value = self.board[y_start + 1][x_start]
                         value2 = self.board[y_end -1 ][x_end]
-                        if(value == '.'):
+                        if(value == '.' and y_start +1 < 7):
                             self.stones[color].append((y_start + 1, x_start))
                             self.board[y_start + 1][x_start] = alphabet[color][len(self.stones[color])-1]
                             return (y_start +1,x_start), direction
-                        elif(value2 == '.'):
+                        elif(value2 == '.'and y_end -1 > -1):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end - 1][x_end] = alphabet[color][len(self.stones[color])-1]
                             return (y_end -1,x_end), direction
@@ -137,11 +139,11 @@ class Gomoku:
                         # check left down side first then up right
                         value = self.board[y_start + 1][x_start -1]
                         value2 = self.board[y_end - 1 ][x_end + 1]
-                        if(value == '.'):
+                        if(value == '.' and y_start +1 < 7 and x_start-1 > -1):
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start + 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
                             return (y_start +1,x_start -1 ), direction
-                        elif(value2 == '.'):
+                        elif(value2 == '.' and y_end -1 > -1 and x_end +1 < 7):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end - 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
                             return (y_end -1,x_end +1), direction
@@ -149,11 +151,11 @@ class Gomoku:
                         # check left up side first then down right
                         value = self.board[y_start - 1][x_start -1]
                         value2 = self.board[y_end + 1 ][x_end + 1]
-                        if(value == '.'):
+                        if(value == '.' and y_start-1 > -1 and x_start -1 > -1):
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start - 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
                             return (y_start  -1,x_start - 1 ), direction
-                        elif(value2 == '.'):
+                        elif(value2 == '.'and y_end +1 < 7 and x_end +1 < 7):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end + 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
                             return (y_end +1,x_end +1), direction
@@ -164,11 +166,16 @@ class Gomoku:
                 # print(point, length, d, opponent)
                 x_start, y_start, x_end, y_end = start[0], start[1], end[0], end[1]
                 if(length == 3):
+                    print("Rule 3")
                     if(direction == 'L'):
                         # print("printing ...")
                         # check left side first then right
-                        value = self.board[y_start][x_start - 1]
-                        value2 = self.board[y_end][x_end + 1]
+                        value = '!'
+                        value2 = '!'
+                        if(x_start -1 > -1):
+                            value = self.board[y_start][x_start - 1]
+                        if(x_end +1 < 7):
+                            value2 = self.board[y_end][x_end + 1]
                         if(value == '.' and value2 == '.'):
                             self.stones[color].append((y_start, x_start - 1))
                             self.board[y_start][x_start - 1] = alphabet[color][len(self.stones[color])-1]
@@ -176,8 +183,12 @@ class Gomoku:
 
                     elif(direction == 'U'):
                         # check down side first then up
-                        value = self.board[y_start + 1][x_start]
-                        value2 = self.board[y_end -1 ][x_end]
+                        value = '!'
+                        value2 = '!'
+                        if(y_start +1 < 7):
+                            value = self.board[y_start + 1][x_start]
+                        if(y_end -1 > -1):
+                            value2 = self.board[y_end -1 ][x_end]
                         if(value == '.' and value2 == '.'):
                             self.stones[color].append((y_start + 1, x_start))
                             self.board[y_start + 1][x_start] = alphabet[color][len(self.stones[color])-1]
@@ -185,8 +196,12 @@ class Gomoku:
                         
                     elif(direction == 'DL'):
                         # check left down side first then up right
-                        value = self.board[y_start + 1][x_start -1]
-                        value2 = self.board[y_end - 1 ][x_end + 1]
+                        value = '!'
+                        value2 = '!'
+                        if(y_start +1 < 7 and x_start - 1 > -1):
+                            value = self.board[y_start + 1][x_start -1]
+                        if(y_end -1 > -1 and x_end +1 < 7):
+                            value2 = self.board[y_end - 1 ][x_end + 1]
                         if(value == '.' and value2 == '.'):
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start + 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
@@ -194,8 +209,13 @@ class Gomoku:
 
                     elif(direction == 'UL'):
                         # check left up side first then down right
-                        value = self.board[y_start - 1][x_start -1]
-                        value2 = self.board[y_end + 1 ][x_end + 1]
+                        value = '!'
+                        value2 = '!'
+
+                        if(y_start -1 > -1 and x_start -1 > -1):
+                            value = self.board[y_start - 1][x_start -1]
+                        if(y_end +1 < 7 and x_end +1  < 7):
+                            value2 = self.board[y_end + 1 ][x_end + 1]
                         if(value == '.' and value2 == '.'):
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start - 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
@@ -205,6 +225,7 @@ class Gomoku:
         winning_blocks = []
         for row in self.board:
             for cell in row:
+                # print("Rule 4")
                 if(cell == '.' or (color == 'r' and  not cell.isupper()) or (color == 'b' and cell.isupper())):
                     for d in directions:
                         stone_count = 0
@@ -255,8 +276,9 @@ class Gomoku:
                 x+=1
             x=0
             y+=1 
-
+        print("Rule 4")
         winning_blocks.sort(reverse = True)
+        #print(winning_blocks, color)
         max_stones = winning_blocks[0][0]
         best_winners = []
         for item in winning_blocks:
@@ -654,16 +676,13 @@ g = Gomoku()
 # g.stones['b'] = [(0,1),(2,2),(2,4)]
 # g.stones['r'] = [(4,1),(5,1),(5,2)]
 
-# g.board[1][5] = 'A'
+g.board[1][5] = 'A'
 
 
-# g.board[5][1] = 'a'
+g.board[5][1] = 'a'
 
-# g.stones['b'] = [(1,5)]
-# g.stones['r'] = [(5,1)]
-
-
-
+g.stones['b'] = [(1,5)]
+g.stones['r'] = [(5,1)]
 
 
 
@@ -676,7 +695,6 @@ while(not g.gameover):
     g.print_board()
     for D in directions:
         check, trash1, trash2, trash3 = g.stone_chain(point, D, turn)
-        print(check, D)
         if(check == 5):
             g.gameover =1
     if(turn == 'r'):
@@ -686,17 +704,8 @@ while(not g.gameover):
     if(len(g.stones['r'])+ len(g.stones['b']) == 49):
         g.gameover = 1
 
-# g.reflex('r')
-# g.reflex('b')
-# g.reflex('r')
-# g.reflex('b')
-# g.reflex('r')
-# g.reflex('b')
-# g.reflex('r')
-# g.reflex('b')
 
 
-
-print()
-g.print_board()
+# print()
+# g.print_board()
 print("Game Over! ")
