@@ -31,17 +31,19 @@ class Gomoku:
             print()
 
     def reflex(self, color):
+        opponent = 'b'
+        if(color == 'b'):
+            opponent = 'r'
+        #1. Check for chains of length 4 in own color
         for point in self.stones[color]:
-            # neighbors = self.get_neighbors(point)
-            # y,x, direction = neighbors[0], neighbors[1], neighbors[2]
             for d in directions:
                 length, start, end, direction = self.stone_chain(point, d, color)
                 # print(point, length, d)
                 x_start, y_start, x_end, y_end = start[0], start[1], end[0], end[1]
-                print('Info', x_start, y_start, x_end, y_end, point)
+                # print('Info', x_start, y_start, x_end, y_end, point)
                 if(length == 4):
                     if(direction == 'L'):
-                        print('End, x_end', end, x_end)
+                        # print('End, x_end', end, x_end)
                         # check left side first then right
                         value = self.board[y_start][x_start - 1]
                         value2 = self.board[y_end][x_end + 1]
@@ -78,7 +80,7 @@ class Gomoku:
                             self.board[y_end - 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
                             return
                     elif(direction == 'UL'):
-                        # check left down side first then up right
+                        # check left up side first then down right
                         value = self.board[y_start - 1][x_start -1]
                         value2 = self.board[y_end + 1 ][x_end + 1]
                         if(value == '.'):
@@ -89,6 +91,66 @@ class Gomoku:
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end + 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
                             return
+
+        #2. Check opponent for chains of 4 
+        for point in self.stones[opponent]:
+            for d in directions:
+                length, start, end, direction = self.stone_chain(point, d, opponent)
+                print(point, length, d, opponent)
+                x_start, y_start, x_end, y_end = start[0], start[1], end[0], end[1]
+                if(length == 4):
+                    if(direction == 'L'):
+                        # print("printing ...")
+                        # check left side first then right
+                        value = self.board[y_start][x_start - 1]
+                        value2 = self.board[y_end][x_end + 1]
+                        if(value == '.'):
+                            self.stones[color].append((y_start, x_start - 1))
+                            self.board[y_start][x_start - 1] = alphabet[color][len(self.stones[color])-1]
+                            return
+                        elif(value2 == '.'):
+                            self.stones[color].append((y_end, x_end + 1))
+                            self.board[y_end][x_end + 1] = alphabet[color][len(self.stones[color])-1]
+                            return
+                    elif(direction == 'U'):
+                        # check down side first then up
+                        value = self.board[y_start + 1][x_start]
+                        value2 = self.board[y_end -1 ][x_end]
+                        if(value == '.'):
+                            self.stones[color].append((y_start + 1, x_start))
+                            self.board[y_start + 1][x_start] = alphabet[color][len(self.stones[color])-1]
+                            return
+                        elif(value2 == '.'):
+                            self.stones[color].append((y_end - 1, x_end))
+                            self.board[y_end - 1][x_end] = alphabet[color][len(self.stones[color])-1]
+                            return
+                    elif(direction == 'DL'):
+                        # check left down side first then up right
+                        value = self.board[y_start + 1][x_start -1]
+                        value2 = self.board[y_end - 1 ][x_end + 1]
+                        if(value == '.'):
+                            self.stones[color].append((y_start + 1, x_start -1 ))
+                            self.board[y_start + 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
+                            return
+                        elif(value2 == '.'):
+                            self.stones[color].append((y_end - 1, x_end))
+                            self.board[y_end - 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
+                            return
+                    elif(direction == 'UL'):
+                        # check left up side first then down right
+                        value = self.board[y_start - 1][x_start -1]
+                        value2 = self.board[y_end + 1 ][x_end + 1]
+                        if(value == '.'):
+                            self.stones[color].append((y_start + 1, x_start -1 ))
+                            self.board[y_start - 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
+                            return
+                        elif(value2 == '.'):
+                            self.stones[color].append((y_end - 1, x_end))
+                            self.board[y_end + 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
+                            return
+
+
+
 
 
    # def get_neighbors(self, cell):
@@ -116,7 +178,7 @@ class Gomoku:
                     break
 
                 # dealing with blue
-                elif(not value.isupper()):
+                elif(color == 'b'and not value.isupper()):
                     break
                 x = x - 1
                 y = y + 1
@@ -125,17 +187,17 @@ class Gomoku:
             # At this point its at the farthest back in the chain
             start = (x, y)
             end = (x, y)
-            print('start, end', start, end)
+            # print('start, end', start, end)
             value = self.board[y-1][x+1]
             while(value != '.'):
-                print(x)
+                # print(x)
                 # dealing with red
 
                 if(color == 'r' and value.isupper() ):
                     break
 
                 # dealing with blue
-                elif(not value.isupper()):
+                elif(color == 'b'and not value.isupper()):
                     break
                     
                 x = x + 1
@@ -154,7 +216,7 @@ class Gomoku:
                     break
 
                 # dealing with blue
-                elif(not value.isupper()):
+                elif(color == 'b'and not value.isupper()):
                     break
                 x = x - 1
 
@@ -162,21 +224,22 @@ class Gomoku:
             # At this point its at the farthest back in the chain
             start = (x, y)
             end = (x, y)
-            print('start, end', start, end)
+            # print('start, end', start, end)
             value = self.board[y][x+1]
             while(value != '.'):
-                print(x)
+                # print(x)
                 # dealing with red
 
                 if(color == 'r' and value.isupper() ):
                     break
 
                 # dealing with blue
-                elif(not value.isupper()):
+                elif(color == 'b'and not value.isupper()):
                     break
 
                 x = x + 1
                 count += 1
+                # print("count: ", count,"value", value)
                 end = (x, y)
                 value = self.board[y][x + 1]
             # return something, (length, start, end, direction?)
@@ -192,7 +255,7 @@ class Gomoku:
                     break
 
                 # dealing with blue
-                elif(not value.isupper()):
+                elif(color == 'b'and not value.isupper()):
                     break
                 x = x - 1
                 y = y - 1
@@ -201,7 +264,7 @@ class Gomoku:
             # At this point its at the farthest back in the chain
             start = (x, y)
             end = (x, y)
-            print('start, end', start, end)
+            # print('start, end', start, end)
             value = self.board[y+1][x+1]
             while(value != '.'):
                 print(x)
@@ -211,7 +274,7 @@ class Gomoku:
                     break
 
                 # dealing with blue
-                elif(not value.isupper()):
+                elif(color == 'b'and not value.isupper()):
                     break
                     
                 x = x + 1
@@ -231,7 +294,7 @@ class Gomoku:
                     break
 
                 # dealing with blue
-                elif(not value.isupper()):
+                elif(color == 'b'and not value.isupper()):
                     break
                 y = y - 1
 
@@ -239,7 +302,7 @@ class Gomoku:
             # At this point its at the farthest back in the chain
             start = (x, y)
             end = (x, y)
-            print('start, end', start, end)
+            # print('start, end', start, end)
             value = self.board[y+1][x]
             while(value != '.'):
                 # dealing with red
@@ -248,7 +311,7 @@ class Gomoku:
                     break
 
                 # dealing with blue
-                elif(not value.isupper()):
+                elif(color == 'b'and not value.isupper()):
                     break
 
                 y = y + 1
@@ -360,18 +423,32 @@ g = Gomoku()
 # g.stones['b'] = [(1,1),(2,2),(3,3),(4,4)]
 # g.stones['r'] = [(3,1),(3,4),(4,3),(6,2),(5,4)]
 
-g.board[1][1] = 'A'
-g.board[2][2] = 'B'
-g.board[3][3] = 'C'
-g.board[4][4] = 'D'
-g.board[0][0] = 'a'
-g.board[3][4] = 'b'
-g.board[4][3] = 'c'
-g.board[6][2] = 'd'
-g.board[5][5] = 'e'
+# g.board[1][1] = 'A'
+# g.board[2][2] = 'B'
+# g.board[3][3] = 'C'
+# g.board[4][4] = 'D'
+# g.board[0][0] = 'a'
+# g.board[3][4] = 'b'
+# g.board[4][3] = 'c'
+# g.board[6][2] = 'd'
+# g.board[5][5] = 'e'
 
-g.stones['b'] = [(1,1),(2,2),(3,3),(4,4)]
-g.stones['r'] = [(0,0),(3,4),(4,3),(6,2),(5,5)]
+# g.stones['b'] = [(1,1),(2,2),(3,3),(4,4)]
+# g.stones['r'] = [(0,0),(3,4),(4,3),(6,2),(5,5)]
+
+#test for #2
+
+g.board[3][0] = 'A'
+g.board[2][0] = 'B'
+g.board[2][1] = 'C'
+
+g.board[3][1] = 'a'
+g.board[3][2] = 'b'
+g.board[3][3] = 'c'
+g.board[3][4] = 'd'
+
+g.stones['b'] = [(3,0),(2,0),(2,1)]
+g.stones['r'] = [(3,1),(3,2),(3,3),(3,4)]
 
 
 
