@@ -52,12 +52,12 @@ class Gomoku:
                             self.stones[color].append((y_start, x_start - 1))
                             self.board[y_start][x_start - 1] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
-                            return
+                            return (y_start,x_start - 1), direction
                         elif(value2 == '.'):
                             self.stones[color].append((y_end, x_end + 1))
                             self.board[y_end][x_end + 1] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
-                            return
+                            return (y_end,x_end + 1), direction
                     elif(direction == 'U'):
                         # check down side first then up
                         value = self.board[y_start + 1][x_start]
@@ -66,12 +66,12 @@ class Gomoku:
                             self.stones[color].append((y_start + 1, x_start))
                             self.board[y_start + 1][x_start] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
-                            return
+                            return (y_start +1,x_start), direction
                         elif(value2 == '.'):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end - 1][x_end] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
-                            return
+                            return (y_end -1,x_end), direction
                     elif(direction == 'DL'):
                         # check left down side first then up right
                         value = self.board[y_start + 1][x_start -1]
@@ -80,12 +80,12 @@ class Gomoku:
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start + 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
-                            return
+                            return (y_start +1,x_start -1 ), direction
                         elif(value2 == '.'):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end - 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
-                            return
+                            return (y_end -1,x_end +1), direction
                     elif(direction == 'UL'):
                         # check left up side first then down right
                         value = self.board[y_start - 1][x_start -1]
@@ -94,12 +94,12 @@ class Gomoku:
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start - 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
-                            return
+                            return (y_start  -1,x_start - 1 ), direction
                         elif(value2 == '.'):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end + 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
                             self.gameover = 1
-                            return
+                            return (y_end +1,x_end +1), direction
 
         #Rule 2. Check opponent for chains of 4 
         for point in self.stones[opponent]:
@@ -116,11 +116,11 @@ class Gomoku:
                         if(value == '.'):
                             self.stones[color].append((y_start, x_start - 1))
                             self.board[y_start][x_start - 1] = alphabet[color][len(self.stones[color])-1]
-                            return
+                            return (y_start,x_start - 1), direction
                         elif(value2 == '.'):
                             self.stones[color].append((y_end, x_end + 1))
                             self.board[y_end][x_end + 1] = alphabet[color][len(self.stones[color])-1]
-                            return
+                            return (y_end,x_end + 1), direction
                     elif(direction == 'U'):
                         # check down side first then up
                         value = self.board[y_start + 1][x_start]
@@ -128,11 +128,11 @@ class Gomoku:
                         if(value == '.'):
                             self.stones[color].append((y_start + 1, x_start))
                             self.board[y_start + 1][x_start] = alphabet[color][len(self.stones[color])-1]
-                            return
+                            return (y_start +1,x_start), direction
                         elif(value2 == '.'):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end - 1][x_end] = alphabet[color][len(self.stones[color])-1]
-                            return
+                            return (y_end -1,x_end), direction
                     elif(direction == 'DL'):
                         # check left down side first then up right
                         value = self.board[y_start + 1][x_start -1]
@@ -140,11 +140,11 @@ class Gomoku:
                         if(value == '.'):
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start + 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
-                            return
+                            return (y_start +1,x_start -1 ), direction
                         elif(value2 == '.'):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end - 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
-                            return
+                            return (y_end -1,x_end +1), direction
                     elif(direction == 'UL'):
                         # check left up side first then down right
                         value = self.board[y_start - 1][x_start -1]
@@ -152,11 +152,11 @@ class Gomoku:
                         if(value == '.'):
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start - 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
-                            return
+                            return (y_start  -1,x_start - 1 ), direction
                         elif(value2 == '.'):
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end + 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
-                            return
+                            return (y_end +1,x_end +1), direction
         #Rule 3. Check whether the opponent has an unbroken chain formed by 3 stones and has empty spaces on BOTH ends of the chain
         for point in self.stones[opponent]:
             for d in directions:
@@ -172,7 +172,7 @@ class Gomoku:
                         if(value == '.' and value2 == '.'):
                             self.stones[color].append((y_start, x_start - 1))
                             self.board[y_start][x_start - 1] = alphabet[color][len(self.stones[color])-1]
-                            return
+                            return (y_start,x_start - 1), direction
 
                     elif(direction == 'U'):
                         # check down side first then up
@@ -181,7 +181,7 @@ class Gomoku:
                         if(value == '.' and value2 == '.'):
                             self.stones[color].append((y_start + 1, x_start))
                             self.board[y_start + 1][x_start] = alphabet[color][len(self.stones[color])-1]
-                            return
+                            return (y_start +1,x_start), direction
                         
                     elif(direction == 'DL'):
                         # check left down side first then up right
@@ -190,7 +190,7 @@ class Gomoku:
                         if(value == '.' and value2 == '.'):
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start + 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
-                            return
+                            return (y_start +1,x_start -1 ), direction
 
                     elif(direction == 'UL'):
                         # check left up side first then down right
@@ -199,7 +199,7 @@ class Gomoku:
                         if(value == '.' and value2 == '.'):
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start - 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
-                            return
+                            return (y_start  -1,x_start - 1 ), direction
         #Rule 4. 
         x,y = 0,0
         winning_blocks = []
@@ -280,7 +280,7 @@ class Gomoku:
         X,Y = start_point[0][0], start_point[0][1]
         v, direct  = self.board[start_point[0][1]][start_point[0][0]], start_point[1]
         while(v != '.'):
-            print(X,Y, v)
+            # print(X,Y, v)
             if(direct =='L'):
                 #go right
                 X = X + 1
@@ -301,6 +301,7 @@ class Gomoku:
             
         self.stones[color].append((place_point[1], place_point[0]))
         self.board[place_point[1]][place_point[0]] = alphabet[color][len(self.stones[color])-1]
+        return (place_point[1],place_point[0]), direct
 
 
 
@@ -310,155 +311,193 @@ class Gomoku:
         count = 1
         # down-left
         if(direction == 'DL'):
-            value = self.board[y+1][x-1]
-            while(value != '.'):
-                # dealing with red
-                if(color == 'r' and value.isupper()):
-                    break
-
-                # dealing with blue
-                elif(color == 'b'and not value.isupper()):
-                    break
-                x = x - 1
-                y = y + 1
-
+            if (y+1 < 7 and x-1 > -1):
                 value = self.board[y+1][x-1]
-            # At this point its at the farthest back in the chain
-            start = (x, y)
-            end = (x, y)
-            # print('start, end', start, end)
-            value = self.board[y-1][x+1]
-            while(value != '.'):
-                # print(x)
-                # dealing with red
+                while(value != '.'):
+                    # dealing with red
+                    if(color == 'r' and value.isupper()):
+                        break
 
-                if(color == 'r' and value.isupper() ):
-                    break
+                    # dealing with blue
+                    elif(color == 'b'and not value.isupper()):
+                        break
+                    x = x - 1
+                    y = y + 1
+                    if( x -1 < 0 or y +1 > 6):
+                        break
 
-                # dealing with blue
-                elif(color == 'b'and not value.isupper()):
-                    break
-                    
-                x = x + 1
-                y = y - 1
-                count += 1
+                    value = self.board[y+1][x-1]
+                # At this point its at the farthest back in the chain
+                start = (x, y)
                 end = (x, y)
-                value = self.board[y-1][x + 1]
-            return count, start, end, direction
+                # print('start, end', start, end)
+                if (y-1 >-1 and x+1 < 7):
+                    value = self.board[y-1][x+1]
+                    while(value != '.'):
+                        # print(x)
+                        # dealing with red
+
+                        if(color == 'r' and value.isupper() ):
+                            break
+
+                        # dealing with blue
+                        elif(color == 'b'and not value.isupper()):
+                            break
+                            
+                        x = x + 1
+                        y = y - 1
+            
+                        count += 1
+                        end = (x, y)
+                        if( x+1 > 7 or y-1 < 0):
+                            break
+                        value = self.board[y-1][x + 1]
+                return count, start, end, direction
+            else:
+                return 0, point, point, direction
     
         # left
         elif(direction == 'L'):
-            value = self.board[y][x-1]
-            while(value != '.'):
-                # dealing with red
-                if(color == 'r' and value.isupper()):
-                    break
-
-                # dealing with blue
-                elif(color == 'b'and not value.isupper()):
-                    break
-                x = x - 1
-
+            if (x-1 > -1):
                 value = self.board[y][x-1]
-            # At this point its at the farthest back in the chain
-            start = (x, y)
-            end = (x, y)
-            # print('start, end', start, end)
-            value = self.board[y][x+1]
-            while(value != '.'):
-                # print(x)
-                # dealing with red
+                while(value != '.'):
+                    # dealing with red
+                    if(color == 'r' and value.isupper()):
+                        break
 
-                if(color == 'r' and value.isupper() ):
-                    break
-
-                # dealing with blue
-                elif(color == 'b'and not value.isupper()):
-                    break
-
-                x = x + 1
-                count += 1
-                # print("count: ", count,"value", value)
+                    # dealing with blue
+                    elif(color == 'b'and not value.isupper()):
+                        break
+                    x = x - 1
+                    if( x -1 < 0):
+                        break
+                    value = self.board[y][x-1]
+                # At this point its at the farthest back in the chain
+                start = (x, y)
                 end = (x, y)
-                value = self.board[y][x + 1]
-            # return something, (length, start, end, direction?)
-            # print('start, end after', start, end)
-            return count, start, end, direction
+                # print('start, end', start, end)
+                if(x+1 < 7):
+                    value = self.board[y][x+1]
+                    while(value != '.'):
+                        # print(x)
+                        # dealing with red
+
+                        if(color == 'r' and value.isupper() ):
+                            break
+
+                        # dealing with blue
+                        elif(color == 'b'and not value.isupper()):
+                            break
+
+                        x = x + 1
+                        count += 1
+
+                        end = (x, y)
+                        if(x +1 > 6):
+                            break
+                        value = self.board[y][x + 1]
+                # return something, (length, start, end, direction?)
+                # print('start, end after', start, end)
+                return count, start, end, direction
+            else:
+                return 0, point, point, direction
 
         # up-left
         elif(direction == 'UL'):
-            value = self.board[y-1][x-1]
-            while(value != '.'):
-                # dealing with red
-                if(color == 'r' and value.isupper()):
-                    break
-
-                # dealing with blue
-                elif(color == 'b'and not value.isupper()):
-                    break
-                x = x - 1
-                y = y - 1
-
+            if (x-1 > -1 and y-1 > -1):
                 value = self.board[y-1][x-1]
-            # At this point its at the farthest back in the chain
-            start = (x, y)
-            end = (x, y)
-            # print('start, end', start, end)
-            value = self.board[y+1][x+1]
-            while(value != '.'):
-                # prnt(x)
-                # dealing with red
+                while(value != '.'):
+                    # dealing with red
+                    if(color == 'r' and value.isupper()):
+                        break
 
-                if(color == 'r' and value.isupper() ):
-                    break
-
-                # dealing with blue
-                elif(color == 'b'and not value.isupper()):
-                    break
-                    
-                x = x + 1
-                y = y + 1
-                count += 1
+                    # dealing with blue
+                    elif(color == 'b'and not value.isupper()):
+                        break
+                    x = x - 1
+                    y = y - 1
+                    if( x -1 < 0 or y -1 < 0):
+                        break
+                    value = self.board[y-1][x-1]
+                # At this point its at the farthest back in the chain
+                start = (x, y)
                 end = (x, y)
-                value = self.board[y+1][x + 1]
-            return count, start, end, direction
+                # print('start, end', start, end)
+                if( y+1 < 7 and x+1 < 7):
+                    value = self.board[y+1][x+1]
+                    while(value != '.'):
+                        # prnt(x)
+                        # dealing with red
+
+                        if(color == 'r' and value.isupper() ):
+                            break
+
+                        # dealing with blue
+                        elif(color == 'b'and not value.isupper()):
+                            break
+                            
+                        x = x + 1
+                        y = y + 1
+                        # print((x,y), count)
+                        
+                        count += 1
+                        end = (x, y)
+                        if(x +1 > 6 or y +1 > 6 ):
+                            break
+                        value = self.board[y+1][x + 1]
+                # print("start: ", start, " End: ", end)
+                return count, start, end, direction
+            else:
+                return 0, point, point, direction
     
 
         # up
-        else:
-            value = self.board[y-1][x]
-            while(value != '.'):
-                # dealing with red
-                if(color == 'r' and value.isupper()):
-                    break
-
-                # dealing with blue
-                elif(color == 'b'and not value.isupper()):
-                    break
-                y = y - 1
-
+        elif(direction == 'U'):
+            if ( y-1 > -1):
                 value = self.board[y-1][x]
-            # At this point its at the farthest back in the chain
-            start = (x, y)
-            end = (x, y)
-            # print('start, end', start, end)
-            value = self.board[y+1][x]
-            while(value != '.'):
-                # dealing with red
+                while(value != '.'):
+                    # dealing with red
+                    if(color == 'r' and value.isupper()):
+                        break
 
-                if(color == 'r' and value.isupper() ):
-                    break
-
-                # dealing with blue
-                elif(color == 'b'and not value.isupper()):
-                    break
-
-                y = y + 1
-                count += 1
+                    # dealing with blue
+                    elif(color == 'b'and not value.isupper()):
+                        break
+                    y = y - 1
+                    if( y -1 < 0):
+                        break
+                    value = self.board[y-1][x]
+                # At this point its at the farthest back in the chain
                 start = (x, y)
-                value = self.board[y+1][x]
+                end = (x, y)
+                # print('start, end', start, end)
+                if( y+1 < 7):
+                    value = self.board[y+1][x]
+                    while(value != '.'):
+                        # dealing with red
 
-            return count, start, end, direction
+                        if(color == 'r' and value.isupper() ):
+                            break
+
+                        # dealing with blue
+                        elif(color == 'b'and not value.isupper()):
+                            break
+
+                        y = y + 1
+                        count += 1
+                        start = (x, y)
+                        if(y +1 > 6):
+                            break
+                        value = self.board[y+1][x]
+
+                return count, start, end, direction
+            else:
+                return 0, point, point, direction
+
+
+
+        else:
+            return 0, point, point, direction
 
 
 
@@ -615,13 +654,13 @@ g = Gomoku()
 # g.stones['b'] = [(0,1),(2,2),(2,4)]
 # g.stones['r'] = [(4,1),(5,1),(5,2)]
 
-g.board[1][5] = 'A'
+# g.board[1][5] = 'A'
 
 
-g.board[5][1] = 'a'
+# g.board[5][1] = 'a'
 
-g.stones['b'] = [(1,5)]
-g.stones['r'] = [(5,1)]
+# g.stones['b'] = [(1,5)]
+# g.stones['r'] = [(5,1)]
 
 
 
@@ -632,9 +671,14 @@ g.print_board()
 
 turn = 'r'
 while(not g.gameover):
-    g.reflex(turn)
+    point, d = g.reflex(turn)
     print()
     g.print_board()
+    for D in directions:
+        check, trash1, trash2, trash3 = g.stone_chain(point, D, turn)
+        print(check, D)
+        if(check == 5):
+            g.gameover =1
     if(turn == 'r'):
         turn = 'b'
     elif(turn == 'b'):
