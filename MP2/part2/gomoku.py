@@ -34,7 +34,7 @@ class Gomoku:
         opponent = 'b'
         if(color == 'b'):
             opponent = 'r'
-        #1. Check for chains of length 4 in own color
+        #Rule 1. Check for chains of length 4 in own color
         for point in self.stones[color]:
             for d in directions:
                 length, start, end, direction = self.stone_chain(point, d, color)
@@ -92,7 +92,7 @@ class Gomoku:
                             self.board[y_end + 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
                             return
 
-        #2. Check opponent for chains of 4 
+        #Rule 2. Check opponent for chains of 4 
         for point in self.stones[opponent]:
             for d in directions:
                 length, start, end, direction = self.stone_chain(point, d, opponent)
@@ -148,7 +148,50 @@ class Gomoku:
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end + 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
                             return
+        #3. Check whether the opponent has an unbroken chain formed by 3 stones and has empty spaces on BOTH ends of the chain
+        for point in self.stones[opponent]:
+            for d in directions:
+                length, start, end, direction = self.stone_chain(point, d, opponent)
+                print(point, length, d, opponent)
+                x_start, y_start, x_end, y_end = start[0], start[1], end[0], end[1]
+                if(length == 3):
+                    if(direction == 'L'):
+                        # print("printing ...")
+                        # check left side first then right
+                        value = self.board[y_start][x_start - 1]
+                        value2 = self.board[y_end][x_end + 1]
+                        if(value == '.' and value2 == '.'):
+                            self.stones[color].append((y_start, x_start - 1))
+                            self.board[y_start][x_start - 1] = alphabet[color][len(self.stones[color])-1]
+                            return
 
+                    elif(direction == 'U'):
+                        # check down side first then up
+                        value = self.board[y_start + 1][x_start]
+                        value2 = self.board[y_end -1 ][x_end]
+                        if(value == '.' and value2 == '.'):
+                            self.stones[color].append((y_start + 1, x_start))
+                            self.board[y_start + 1][x_start] = alphabet[color][len(self.stones[color])-1]
+                            return
+                        
+                    elif(direction == 'DL'):
+                        # check left down side first then up right
+                        value = self.board[y_start + 1][x_start -1]
+                        value2 = self.board[y_end - 1 ][x_end + 1]
+                        if(value == '.' and value2 == '.'):
+                            self.stones[color].append((y_start + 1, x_start -1 ))
+                            self.board[y_start + 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
+                            return
+
+                    elif(direction == 'UL'):
+                        # check left up side first then down right
+                        value = self.board[y_start - 1][x_start -1]
+                        value2 = self.board[y_end + 1 ][x_end + 1]
+                        if(value == '.' and value2 == '.'):
+                            self.stones[color].append((y_start + 1, x_start -1 ))
+                            self.board[y_start - 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
+                            return
+                        
 
 
 
@@ -438,17 +481,31 @@ g = Gomoku()
 
 #test for #2
 
-g.board[3][0] = 'A'
-g.board[2][0] = 'B'
-g.board[2][1] = 'C'
+# g.board[3][0] = 'A'
+# g.board[2][0] = 'B'
+# g.board[2][1] = 'C'
 
-g.board[3][1] = 'a'
-g.board[3][2] = 'b'
-g.board[3][3] = 'c'
-g.board[3][4] = 'd'
+# g.board[3][1] = 'a'
+# g.board[3][2] = 'b'
+# g.board[3][3] = 'c'
+# g.board[3][4] = 'd'
 
-g.stones['b'] = [(3,0),(2,0),(2,1)]
-g.stones['r'] = [(3,1),(3,2),(3,3),(3,4)]
+# g.stones['b'] = [(3,0),(2,0),(2,1)]
+# g.stones['r'] = [(3,1),(3,2),(3,3),(3,4)]
+
+
+#test for #3
+
+g.board[1][1] = 'A'
+g.board[3][2] = 'B'
+
+g.board[2][2] = 'a'
+g.board[2][3] = 'b'
+g.board[2][4] = 'c'
+
+g.stones['b'] = [(1,1),(3,2)]
+g.stones['r'] = [(2,3),(2,2),(2,4)]
+
 
 
 
