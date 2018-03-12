@@ -217,11 +217,13 @@ class Gomoku:
                                     if(not value.isupper()):
                                         stone_count += 1
                                     else:
+                                        count -= 1
                                         break
                                 elif(color == 'b'):
                                     if(value.isupper()):
                                         stone_count += 1
                                     else:
+                                        count -= 1
                                         break
 
                             if(d =='L'):
@@ -404,7 +406,7 @@ class Gomoku:
             # print('start, end', start, end)
             value = self.board[y+1][x+1]
             while(value != '.'):
-                print(x)
+                # prnt(x)
                 # dealing with red
 
                 if(color == 'r' and value.isupper() ):
@@ -640,7 +642,6 @@ while(not g.gameover):
     if(len(g.stones['r'])+ len(g.stones['b']) == 49):
         g.gameover = 1
 
-
 # g.reflex('r')
 # g.reflex('b')
 # g.reflex('r')
@@ -654,3 +655,4 @@ while(not g.gameover):
 
 print()
 g.print_board()
+print("Game Over! ")
