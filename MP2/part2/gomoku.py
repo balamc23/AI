@@ -96,7 +96,7 @@ class Gomoku:
         for point in self.stones[opponent]:
             for d in directions:
                 length, start, end, direction = self.stone_chain(point, d, opponent)
-                print(point, length, d, opponent)
+                # print(point, length, d, opponent)
                 x_start, y_start, x_end, y_end = start[0], start[1], end[0], end[1]
                 if(length == 4):
                     if(direction == 'L'):
@@ -148,11 +148,11 @@ class Gomoku:
                             self.stones[color].append((y_end - 1, x_end))
                             self.board[y_end + 1][x_end +1] = alphabet[color][len(self.stones[color])-1]
                             return
-        #3. Check whether the opponent has an unbroken chain formed by 3 stones and has empty spaces on BOTH ends of the chain
+        #Rule 3. Check whether the opponent has an unbroken chain formed by 3 stones and has empty spaces on BOTH ends of the chain
         for point in self.stones[opponent]:
             for d in directions:
                 length, start, end, direction = self.stone_chain(point, d, opponent)
-                print(point, length, d, opponent)
+                # print(point, length, d, opponent)
                 x_start, y_start, x_end, y_end = start[0], start[1], end[0], end[1]
                 if(length == 3):
                     if(direction == 'L'):
@@ -191,23 +191,108 @@ class Gomoku:
                             self.stones[color].append((y_start + 1, x_start -1 ))
                             self.board[y_start - 1][x_start-1] = alphabet[color][len(self.stones[color])-1]
                             return
-                        
+        #Rule 4. 
+        x,y = 0,0
+        winning_blocks = []
+        for row in self.board:
+            for cell in row:
+                if(cell == '.' or (color == 'r' and  not cell.isupper()) or (color == 'b' and cell.isupper())):
+                    for d in directions:
+                        stone_count = 0
+                        x_temp,y_temp = x,y
+                        for count in range(1,6):
+                            value = self.board[y_temp][x_temp]
+                            #If theres a stone in the path check if its yours or nah
+                            if(value != '.'):
+                                if(color == 'r'):
+                                    if(not value.isupper()):
+                                        stone_count += 1
+                                    else:
+                                        break
+                                else:
+                                    if(value.isupper()):
+                                        stone_count += 1
+                                    else:
+                                        break
+
+                            if(d =='L'):
+                                #go right
+                                if(x_temp +1 > 6):
+                                    break
+                                x_temp += 1
+                            elif(d == 'DL'):
+                                #down-left
+                                if((x_temp -1 < 0) or (y_temp +1 > 6)):
+                                    break
+                                x_temp -= 1
+                                y_temp += 1
+                            elif(d == 'U'):
+                                #go down
+                                if(y_temp +1 > 6):
+                                    break
+                                y_temp +=1
+                            elif(d =='UL'):
+                                # go down-right
+                                if((x_temp +1 > 6) or (y_temp +1>6)):
+                                    break
+                                x_temp +=1
+                                y_temp +=1
+
+                        if(count == 5):
+                            winning_blocks.append( (stone_count, (x,y), d))
+                # print(cell, self.board[y][x])
+                x+=1
+            x=0
+            y+=1 
+
+        winning_blocks.sort(reverse = True)
+        max_stones = winning_blocks[0][0]
+        best_winners = []
+        for item in winning_blocks:
+            if (item[0] < max_stones):
+                break
+            dist_to_x = 0+item[1][0]
+            best_winners.append( ( dist_to_x , (item[1][0],item[1][1]), item[2]))
+        best_winners.sort()
+        closest_x = best_winners[0][0]
+        closest_y = 7
+        start_point = (best_winners[0][1],best_winners[2] )
+        for item in best_winners:
+            if(item[0] > closest_x):
+                break
+            if(6-item[1][1] < closest_y):
+                closest_y = 6-item[1][1]
+                start_point = (item[1],item[2])
+
+        #time to add the actual point
+        place_point = start_point[0]
+        X,Y = start_point[0][0], start_point[0][1]
+        v, direct  = self.board[start_point[0][1]][start_point[0][0]], start_point[1]
+        while(v != '.'):
+            if(direct =='L'):
+                #go right
+                X = X + 1
+                place_point = (X, Y)
+            elif(direct == 'DL'):
+                #down-left
+                X = X -1
+                Y = Y +1
+            elif(direct == 'U'):
+                #go down
+                Y +=1
+            elif(direct =='UL'):
+                # go down-right
+                X +=1
+                Y +=1
+
+            place_point = (X, Y)
+            v = self.board[place_point[1]][place_point[0]]
+            
+        self.stones[color].append((place_point[1], place_point[0]))
+        self.board[place_point[1]][place_point[0]] = alphabet[color][len(self.stones[color])-1]
 
 
 
-
-   # def get_neighbors(self, cell):
-   #      x, y = cell[0], cell[1]
-   #      return [
-   #          (x - 1, y,'L'),       #left
-   #          # (x + 1, y),     #right
-   #          (x, y - 1,'U'),       #up
-   #          # (x, y + 1),     #down
-   #          (x - 1, y - 1,'UL'),  #up-left
-   #          # (x + 1, y - 1), #up-right
-   #          (x - 1, y + 1,'DL'),  #down-left
-   #          # (x + 1, y + 1)  #down-right
-   #      ]
 
     def stone_chain(self, point, direction, color):
         y, x = point[0], point[1]
@@ -496,15 +581,37 @@ g = Gomoku()
 
 #test for #3
 
-g.board[1][1] = 'A'
-g.board[3][2] = 'B'
+# g.board[1][1] = 'A'
+# g.board[3][2] = 'B'
 
-g.board[2][2] = 'a'
-g.board[2][3] = 'b'
-g.board[2][4] = 'c'
+# g.board[2][2] = 'a'
+# g.board[2][3] = 'b'
+# g.board[2][4] = 'c'
 
-g.stones['b'] = [(1,1),(3,2)]
-g.stones['r'] = [(2,3),(2,2),(2,4)]
+# g.stones['b'] = [(1,1),(3,2)]
+# g.stones['r'] = [(2,3),(2,2),(2,4)]
+
+#test for #4
+
+# g.board[0][1] = 'A'
+# g.board[2][2] = 'B'
+# g.board[2][4] = 'C'
+
+# g.board[4][1] = 'a'
+# g.board[5][1] = 'b'
+# g.board[5][2] = 'c'
+
+# g.stones['b'] = [(0,1),(2,2),(2,4)]
+# g.stones['r'] = [(4,1),(5,1),(5,2)]
+
+g.board[1][5] = 'A'
+
+
+g.board[5][1] = 'a'
+
+g.stones['b'] = [(1,5)]
+g.stones['r'] = [(5,1)]
+
 
 
 
@@ -512,7 +619,16 @@ g.stones['r'] = [(2,3),(2,2),(2,4)]
 
 g.print_board()
 
+g.reflex('r')
 g.reflex('b')
+# g.reflex('r')
+# g.reflex('b')
+# g.reflex('r')
+# g.reflex('b')
+# g.reflex('r')
+# g.reflex('b')
+
+
 
 print()
 g.print_board()
