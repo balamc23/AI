@@ -1,4 +1,4 @@
-from graph import CityGraph
+# from graph import CityGraph
 import matplotlib.pyplot as plt
 from copy import deepcopy
 from node import Node
@@ -28,13 +28,12 @@ class ASTARSolver:
 						   [673, 958, 0, 1001, 399],
 						   [1401, 1934, 10001, 0, 387],
 						   [277, 337, 399, 387, 0]]
-		print("WTFFFFFF")
 		init_pos = self.get_next_steps(a,0)
-		print(init_pos)
+		# print(init_pos)
 		ret = [] #astar values pick smallest
 		for i in init_pos:
 			self.frontier = []
-			print("the starting position is ",i[0], " \n")
+			# print("the starting position is ",i[0], " \n")
 			heapq.heappush(self.frontier,(0,i))
 			ret.append(self.astar())
 		for l in ret:
@@ -52,23 +51,25 @@ class ASTARSolver:
 	def astar(self):
 		
 		# print("The popped element's remaining is  ",l[1][1].remaining, " the number is ", len(l[1][1].remaining) )
+		nodes_expnaded = 0
 		while(1):
+			# nodes_expnaded +=1
 			l =	heapq.heappop(self.frontier)
 			if (len(l[1][1].remaining) == 0):
 				# print(" WHAT")
-				print(" The cost is ",l[1][1].current_cost)
+				# print(" The cost is ",l[1][1].current_cost)
+				# print('nodes expanded = ', nodes_expnaded)
 				return l
-			print("The second arg is ",l)
+			# print("The second arg is ",l)
 			new_list= self.get_next_steps(l[1][1],l[1][0])
-			print(" THE FUCKING LIST IS ",new_list)
 			for i in new_list:
 				# print("HERE I AM ")
 				# print(len(new_list))
 				
 				# answer based on cost
-				# heapq.heappush(self.frontier, (i[1].current_cost1, i))
+				heapq.heappush(self.frontier, (i[1].current_cost1, i))
 				# answer based on stops
-				heapq.heappush(self.frontier, (len(i[1].current_path) + self.heuristic2(len(i[1].remaining)), i))
+				# heapq.heappush(self.frontier, (len(i[1].current_path) + self.heuristic2(len(i[1].remaining)), i))
 
 	def get_next_steps(self, cur_node, prev_position):
 		# print("At start of get next steps prev position is ", prev_position)
@@ -101,7 +102,7 @@ class ASTARSolver:
 			new_current_path.append(pos)
 			if(self.loop > 2):
 				# print(self.first_iter, 'duh hello')
-				print(prev_position)
+				# print(prev_position)
 				new_current_cost1 += self.cost_array[self.enum[prev_position]][self.enum[pos]] + self.heuristic(len(new_remaining))
 				new_current_cost += self.cost_array[self.enum[prev_position]][self.enum[pos]]
 			# print(" The position being appended is ", pos)
