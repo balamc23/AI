@@ -1,6 +1,8 @@
 
 import numpy as np
 import math
+import plotly as py
+import plotly.graph_objs as go
 
 k = 1
 
@@ -75,6 +77,103 @@ class NaiveBayes:
 						print("%.2f" % confusion[i][j], end = '| ')
 				print()
 			# print(confusion)
+
+			#Odss Ratios
+			# (wrong - right) 9- 5 ,  8 -4, 8- 2,  8-7 
+			log_prob = np.zeros((10,32,32))
+			for n in range(10):
+				for i in range(32):
+					for j in range(32):
+						log_prob[n][i][j] = math.log(self.probabs[n][i][j])
+
+			# 9- 5
+			trace = go.Heatmap(z = log_prob[9])
+			data = [trace]
+			layout = go.Layout( yaxis = dict(autorange='reversed'))
+			fig = go.Figure(data = data, layout = layout)
+			py.offline.plot(fig, filename = '9')
+
+			trace = go.Heatmap(z = log_prob[5])
+			data = [trace]
+			layout = go.Layout( yaxis = dict(autorange='reversed'))
+			fig = go.Figure(data = data, layout = layout)
+			py.offline.plot(fig, filename = '5')
+
+			odds = np.zeros((32,32))
+			for i in range (32):
+				for j in range(32):
+					odds[i][j] = math.log(self.probabs[9][i][j] / self.probabs[5][i][j])
+					# odds[i][j] = log_prob[9][i][j]/ log_prob[5][i][j]
+
+			trace = go.Heatmap(z = odds)
+			data = [trace]
+			layout = go.Layout( yaxis = dict(autorange='reversed'))
+			fig = go.Figure(data = data, layout = layout)
+			py.offline.plot(fig, filename = 'NinebyFive')			
+
+			# 8- 4
+			trace = go.Heatmap(z = log_prob[8])
+			data = [trace]
+			layout = go.Layout( yaxis = dict(autorange='reversed'))
+			fig = go.Figure(data = data, layout = layout)
+			py.offline.plot(fig, filename = '8')
+
+			trace = go.Heatmap(z = log_prob[4])
+			data = [trace]
+			layout = go.Layout( yaxis = dict(autorange='reversed'))
+			fig = go.Figure(data = data, layout = layout)
+			py.offline.plot(fig, filename = '4')
+
+			odds = np.zeros((32,32))
+			for i in range (32):
+				for j in range(32):
+					odds[i][j] = math.log(self.probabs[8][i][j] / self.probabs[4][i][j])
+					# odds[i][j] = log_prob[8][i][j]/ log_prob[4][i][j]
+
+			trace = go.Heatmap(z = odds)
+			data = [trace]
+			layout = go.Layout( yaxis = dict(autorange='reversed'))
+			fig = go.Figure(data = data, layout = layout)
+			py.offline.plot(fig, filename = 'EightbyFour')	
+
+			# 8- 2
+			trace = go.Heatmap(z = log_prob[2])
+			data = [trace]
+			layout = go.Layout( yaxis = dict(autorange='reversed'))
+			fig = go.Figure(data = data, layout = layout)
+			py.offline.plot(fig, filename = '2')
+
+			odds = np.zeros((32,32))
+			for i in range (32):
+				for j in range(32):
+					odds[i][j] = math.log(self.probabs[8][i][j] / self.probabs[2][i][j])
+					# odds[i][j] = log_prob[8][i][j]/ log_prob[4][i][j]
+
+			trace = go.Heatmap(z = odds)
+			data = [trace]
+			layout = go.Layout( yaxis = dict(autorange='reversed'))
+			fig = go.Figure(data = data, layout = layout)
+			py.offline.plot(fig, filename = 'EightbyTwo')	
+
+			# 8- 7
+			trace = go.Heatmap(z = log_prob[7])
+			data = [trace]
+			layout = go.Layout( yaxis = dict(autorange='reversed'))
+			fig = go.Figure(data = data, layout = layout)
+			py.offline.plot(fig, filename = '7')
+
+			odds = np.zeros((32,32))
+			for i in range (32):
+				for j in range(32):
+					odds[i][j] = math.log(self.probabs[8][i][j] / self.probabs[7][i][j])
+					# odds[i][j] = log_prob[8][i][j]/ log_prob[4][i][j]
+
+			trace = go.Heatmap(z = odds)
+			data = [trace]
+			layout = go.Layout( yaxis = dict(autorange='reversed'))
+			fig = go.Figure(data = data, layout = layout)
+			py.offline.plot(fig, filename = 'EightbySeven')
+
 
 
 
