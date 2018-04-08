@@ -1,19 +1,27 @@
 from read_data import DataReader
 import numpy as np
 import time
-
+import calendar
+import time
 class KNN:
-	def __init__(self):
+	def __init__(self,input_num=3):
+		
 		self.reader = DataReader()
 		self.train = list()
 		self.success = []
 		self.conf_matr = dict()
-		for i in range(1,2):
+		for i in range(1,input_num):
 			temp =[[0 for i in range(10)] for j in range(10)]
 			self.conf_matr[i]=temp
-		for i in range(1,2):
+		for i in range(1,input_num):
 			self.knn(i)
-		for i in range(1,2):
+
+		for i in range(1,input_num):
+			for j in range(10):
+				for k in range(10):
+					self.conf_matr[i][j][k]=((self.conf_matr[i][j][k])/(len(self.reader.test_data[str(j)])))*100
+		
+		for i in range(1,input_num):
 			print()
 			print('for k as ', i)
 			print('accuracy is ', (self.success[i-1]/444) * 100)
@@ -28,10 +36,12 @@ class KNN:
 		succ = 0
 		for i in self.reader.test_data.keys():
 			# iterating through all 0-9
+			
 			print('currently testing ', i)
 			cur_data = self.reader.test_data[i]
 			# iterating through each number of each kind (0-9)
 			for j in cur_data:
+				cur = time.time()
 				# print(j)
 				distances = list()
 				# iterating through all numbers in training dataset
@@ -53,6 +63,7 @@ class KNN:
 				if (cl == int(i)):
 					succ += 1
 				self.conf_matr[knum][int(i)][int(cl)]+=1
+				print("The elapsed time is ",time.time()-cur)
 		self.success.append(succ)
 
 	def classifier(self, arr):
