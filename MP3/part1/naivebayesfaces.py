@@ -6,11 +6,13 @@ k = 1
 class NaiveBayesFaces:
 
 	def __init__(self):		
-		self.probabs = np.zeros((2,70,61))
+		self.probabs_one = np.zeros((2,70,61))
+		self.probabs_zero = np.zeros((2,70,61))
 
 	def train(self,train_set,train_label):
 		labels = []
-		freq_table = np.zeros((2,70,61))
+		freq_table_one = np.zeros((2,70,61))
+		freq_table_zero = np.zeros((2,70,61))
 		train_count = np.zeros(2)
 		with open(train_label) as L:
 			label_lines = L.readlines()
@@ -28,11 +30,14 @@ class NaiveBayesFaces:
 				for i in range(70):
 					for j in range(61):
 						if(data_lines[70*a +i][j] == '#'):
-							freq_table[idx][i][j] += 1
+							freq_table_one[idx][i][j] += 1
+						else:
+							freq_table_zero[idx][i][j] += 1
 		for n in range(2):
 			for i in range(70):
 				for j in range(61):
-					self.probabs[n][i][j] = (k + freq_table[n][i][j])/ (train_count[n] +2*k)
+					self.probabs_one[n][i][j] = (k + freq_table_one[n][i][j])/ (train_count[n] +2*k)
+					self.probabs_zero[n][i][j] = (k + freq_table_zero[n][i][j])/ (train_count[n] +2*k)
 
 
 	def test(self,test_set,test_label):
@@ -62,12 +67,14 @@ class NaiveBayesFaces:
 					for i in range(70):
 						for j in range(61):
 							if(data_lines[70*a +i][j] == '#'):
-								P = P + math.log(self.probabs[n][i][j])
+								P = P + math.log(self.probabs_one[n][i][j])
+							else:
+								P = P + math.log(self.probabs_zero[n][i][j])
 					result.append((P,n))
 				predict = max(result)[1]
 				confusion[idx][predict] += 1
 				if(idx == predict):
-					print(a, result)
+					# print(a, result)
 					correct += 1
 					class_corr[idx] += 1
 				else:
@@ -77,10 +84,10 @@ class NaiveBayesFaces:
 		print('Correct: ',correct)
 		print('Incorrect: ', incorrect)
 		print('Accuracy: ', 100*correct/(correct+incorrect), '%')
-		print('Classificaiton Accuracy for Each Digit')
+		print('Classificaiton Accuracy for Face or Not Face')
 		for n in range (2):
 			print(n,':', 100 * class_corr[n]/(class_corr[n]+class_incorr[n]), '%' )	
-		print('     0      1      2      ')
+		print('     0      1      ')
 		for i in range(2):
 			print(i, end='| ')
 			for j in range(2):
