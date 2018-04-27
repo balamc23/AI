@@ -33,6 +33,9 @@ class MarkovDecisionProcess:
 	def update_environment(self, action):
 		U = np.random.uniform(-0.015, 0.015)
 		V = np.random.uniform(-0.03, 0.03)
+		self.ball_x += self.velocity_x
+		self.ball_y += self.velocity_y
+
 		if(self.ball_y < 0):
 			self.ball_y = -self.ball_y
 			self.velocity_y = -self.velocity_y	
@@ -50,8 +53,8 @@ class MarkovDecisionProcess:
 				self.velocity_y = self.velocity_y + V
 
 		# updating position of ball
-		self.ball_x += self.velocity_x
-		self.ball_y += self.velocity_y
+#		self.ball_x += self.velocity_x
+#		self.ball_y += self.velocity_y
 
 	def init_board(self):
 		self.board_ball_x = 6
