@@ -12,16 +12,8 @@ class MarkovDecisionProcess:
 		self.paddle_y = None
 		self.paddle_height = 0.2
 
-		self.board_actions = [0, 0.04, -0.04]
-		self.board_ball_x = None
-		self.board_ball_y = None
-		self.board_velocity_x = None
-		self.board_velocity_y = None
-		self.board_paddle_y = None
-		self.board_paddle_height = math.floor(self.paddle_height * 12)
 
 		self.init_envvironment()
-		self.init_board()
 
 	def init_envvironment(self):
 		self.ball_x = 0.5
@@ -31,62 +23,61 @@ class MarkovDecisionProcess:
 		self.paddle_y = 0.5 - (self.paddle_height/2)
 
 	def update_environment(self, action):
+
+		R = 0
+
 		U = np.random.uniform(-0.015, 0.015)
 		V = np.random.uniform(-0.03, 0.03)
+
 		self.ball_x += self.velocity_x
 		self.ball_y += self.velocity_y
 
+		self.paddle_y += self.actions[action]
+
+
+
 		if(self.ball_y < 0):
 			self.ball_y = -self.ball_y
-			self.velocity_y = -self.velocity_y	
+			self.velocity_y = -self.velocity_y
+			return	R
 		if(self.ball_y > 1):
 			self.ball_y = 2 - self.ball_y
 			self.velocity_y = -self.velocity_y
+			return R
 		if(self.ball_x < 0):
 			self.ball_x = -self.ball_x
 			self.velocity_x = -self.velocity_x	
+			return R
 		if(self.ball_x == 1 and (self.ball_y >= self.paddle_y and self.ball_y <= self.paddle_y + self.paddle_height)):
+			R = 1
 			self.ball_x = 2 *1 - self.ball_x
 			if(abs(self.velocity_x + U) < 1):
 				self.velocity_x = -self.velocity_x + U
 			if(abs(self.velocity_y + V) <1):
 				self.velocity_y = self.velocity_y + V
+			return R
+		else:
+			R = -1
+			return R
 
-		# updating position of ball
-#		self.ball_x += self.velocity_x
-#		self.ball_y += self.velocity_y
 
-	def init_board(self):
-		self.board_ball_x = 6
-		self.board_ball_y = 6
-		self.board_velocity_x = 1
-		self.board_velocity_y = 0			
-		self.board_paddle_y = math.floor(12 * self.paddle_y/(1-self.paddle_height))
-		if(self.paddle_y == (1 - self.paddle_height)):
-			self.board_paddle_y = 11
+	def get_d_state(self):
+		d_x_pos = math.floor(self.ball_x)
+		d_y_pos = math.floor(self.ball_y)
+		d_x_vel = 1
+		if(self.velocity_x < 0):
+			d_x_vel = -1
+		d_y_vel = 0
+		if(self.velocity_y > 0):
+			d_y_vel = 1
+		if(self.velocity_y < 0):
+			d_y_vel = -1
 
-	def update_board(self):
-		# updating position of ball
-		self.ball_x += self.velocity_x
-		self.ball_y += self.velocity_y
+		d_paddle = math.floor(12 * self.paddle_y / (1-self.paddle_height))
+		if(self.paddle_y == 1-self.paddle_height):
+			d_paddle = 11
 
-		if(self.board_ball_y < 0)board_:
-			self.board_ball_y = -self.board_ball_y
-			self.board_velocity_y = -self.board_velocity_y	
-		if(self.board_ball_y > 1):
-			self.board_ball_y = 2 - self.board_ball_y
-			self.board_velocity_y = -self.board_velocity_y
-		if(self.board_ball_x < 0):
-			self.board_ball_x = -self.board_ball_x
-			self.board_velocity_x = -self.board_velocity_x	
-		if(self.board_ball_x == 1 and (self.board_ball_y >= self.board_paddle_y and self.board_ball_y <= self.board_paddle_y + self.board_paddle_height)):
-			self.board_ball_x = 2 *12 - self.board_ball_x
-			self.board_velocity_x = -self.board_velocity_x
-			if(abs(self.velocity_y ) < 0.015):
-				self.board_velocity_y = 0
 
-		# # updating position of ball
-		# self.ball_x += self.velocity_x
-		# self.ball_y += self.velocity_y
+
 
 
