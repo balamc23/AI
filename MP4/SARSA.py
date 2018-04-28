@@ -10,7 +10,7 @@ alpha = 0.2
 gamma = 0.2
 
 
-class QLearn:
+class SARSA:
 
 	def  __init__(self):
 		self.Qtable = {}
@@ -42,7 +42,7 @@ class QLearn:
 					x_next = 0			# note sure if setting this to 0 is the right move
 				#doesnt lose
 				else:
-					x_next = max(self.Qtable[new_state])
+					x_next = self.Qtable[new_state][action]
 				self.Qtable[state][action] = x + alpha* (R + gamma*x_next - x)
 
 			score += R
@@ -72,9 +72,9 @@ class QLearn:
 		print('number of successful games: ', num_success)
 
 
-Q = QLearn()
-Q.train()
-Q.test()
+S = SARSA()
+S.train()
+S.test()
 
 
 
