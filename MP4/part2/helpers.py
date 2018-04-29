@@ -22,7 +22,22 @@ def ReLu_Forward(Z):
 	return Z,cache
 
 def Affine_Backward(dZ, cache):
+	A,W = cache[0],cache[1]
+	I,K,J = len(dZ), len(W), len(W[0])
+	dA,dW,db = np.zeros((I,J)), np.zeros((K,J)), np.zeros(J)
+	for i in range (I):
+		for k in range(K):
+			for j in range(J):
+				dA[i][k] += dZ[i][j]*W[k][j]
 
+	for k in range(K):
+		for j in range(J):
+			for i in range(I):
+				dw[k][j] += A[i][k]*dZ[i][j]
+
+	for j in range(J):
+		for i in ragne(I):
+			db[j] += dZ[i][j]
 
 	return dA,dW,db
 
@@ -37,6 +52,32 @@ def ReLu_Backward(dA, cache):
 
 	return dZ
 
+
+def Cross_Entropy(F,y,n):
+	I,J,C = len(F), len(F[0]), 3
+	dF = np.zeros((I,J))
+	loss =0
+	for i in range(I):
+		Y = y[i]
+		middle_sum = 0
+		for k in range(C):
+			middle_sum += np.exp(F[i][k])
+
+		middle_sum = np.log(middle_sum)
+		loss += F[i][Y] - middle_sum
+	loss = (-1/n)*loss
+
+	for i in range(I):
+		for j in range(J):
+			denom = 0 
+			for k in range(C):
+				denom += np.exp(F[i][k])
+			indicator = 0
+			if(j == y[i]):
+				indicator = 1 
+			dF[i][j] = (-1/n) *(indicator - np.exp(F[i][j])/denom)
+
+	return loss, dF
 
 
 
