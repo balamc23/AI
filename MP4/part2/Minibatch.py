@@ -22,8 +22,14 @@ class DeepPong:
 		return data	
 
 	def FourLayerNetwork(self,X,W1,W2,W3,W4,b1,b2,b3,b4,y,test):
-
-
+		Z1,acache1 = h.Affine_Forward(X,W1,b1)
+		A1,rcache1 = ReLu_Forward(Z1)
+		Z2,acache2 = h.Affine_Forward(A1,W2,b2)
+		A2,rcache2= ReLu_Forward(Z2)
+		Z3,acache3 = h.Affine_Forward(A2,W3,b3)
+		A3,rcache3 = ReLu_Forward(Z3)
+		F,acache4 = h.Affine_Forward(A3,W4,b4)
+		
 
 
 	def MiniBatchGD(self,Epochs):
