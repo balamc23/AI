@@ -62,6 +62,7 @@ def Cross_Entropy(F,y,n):
 	loss =0
 	for i in range(I):
 		Y = y[i]
+		Y = int(Y)
 		middle_sum = 0
 		for k in range(C):
 			middle_sum += np.exp(F[i][k])
@@ -95,8 +96,9 @@ def Cross_Entropy(F,y,n):
 # (0.25796368718229745, 0.7453013108947906, -0.45291593036872846 ),
 # (0.5960936678251274, -0.6287281113880956, 0.9055833139438891 )
 # 	)
-
+# F = np.array(F)
 # y = (0, 0, 0, 1, 0, 2, 2, 2, 0, 0 )
+# y = np.array(y)
 # loss, dF = Cross_Entropy(F,y,len(y))
 # print(loss,dF)
 

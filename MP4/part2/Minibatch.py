@@ -85,7 +85,7 @@ class DeepPong:
 					A.append(self.data[i][:5])
 					y.append(self.data[i][5])
 				A = np.array(A)
-				y = np.array(y)				
+				y = np.array(y)			
 
 				loss = self.FourLayerNetwork(A, self.W1, self.W2, self.W3, self.W4, self.b1, self.b2, self.b3, self.b4, y, 0,n)
 
