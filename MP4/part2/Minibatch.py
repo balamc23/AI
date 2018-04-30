@@ -12,6 +12,7 @@ class DeepPong:
 		self.b2. = np.zeros(256)		
 		self.b3. = np.zeros(256)
 		self.b4. = np.zeros(3)
+		self.learning_rate = 0.1
 
 	def readData(self,dataFile):
 		with open(dataFile) as df:
@@ -31,6 +32,25 @@ class DeepPong:
 			classification = []
 			return classification
 
+		loss, dF = h.Cross_Entropy(F, y)
+		dA3, dW4, dB4 = h.Affine_Backward(dF, acache4)
+		dZ3 = h.ReLu_Backward(dA3, rcache3)
+		dA2, dW3, dB3 = h.Affine_Backward(dZ3, acache3)
+		dZ2 = h.ReLu_Backward(dA2, rcache2)
+		dA1, dW2, dB2 = h.Affine_Backward(dZ2, acache2)
+		dZ1 = h.ReLu_Backward(dA1, rcache1)
+		dX, dW1, dB1 = h.Affine_Backward(dZ1, acache1)
+		
+		self.W1 = self.W1 - self.learning_rate * dW1
+		self.W2 = self.W2 - self.learning_rate * dW2
+		self.W3 = self.W3 - self.learning_rate * dW3
+		self.W4 = self.W4 - self.learning_rate * dW4
+
+		self.b1 = self.b1 - self.learning_rate*dB1
+		self.b2 = self.b2 - self.learning_rate*dB2
+		self.b3 = self.b3 - self.learning_rate*dB3
+		self.b4 = self.b4 - self.learning_rate*dB4
+		return loss
 
 
 
