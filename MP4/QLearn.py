@@ -110,13 +110,17 @@ class QLearn:
 
 	def test_ec(self):
 		num_success = 0
+		total = 0
 		for i in range(200):
 			s = self.play_ec(0)
+			total += s
 			if (s >= 9):
 				print('game', i, 'score: ' , s)
 				num_success += 1
 			self.mdp_ec.init_envvironment()
 
+		average = total/200
+		print('Average Score: ', average)
 		print('number of successful games: ', num_success)
 
 	
