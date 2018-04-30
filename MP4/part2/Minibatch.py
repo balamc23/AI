@@ -6,15 +6,15 @@ from progress import printProgressBar
 class DeepPong:
 	def __init__(self):
 		self.data = np.array((self.readData('expert_policy.txt')))
-		self.W1 = np.random.rand(5,256)
-		self.W2 = np.random.rand(256,256)
-		self.W3 = np.random.rand(256,256)
-		self.W4 = np.random.rand(256,3)
+		self.W1 = np.random.uniform(0.0,0.1,(5,256))
+		self.W2 = np.random.uniform(0.0,0.1,(256,256))
+		self.W3 = np.random.uniform(0.0,0.1,(256,256))
+		self.W4 = np.random.uniform(0.0,0.1,(256,3))
 		self.b1 = np.zeros(256)
 		self.b2 = np.zeros(256)		
 		self.b3 = np.zeros(256)
 		self.b4 = np.zeros(3)
-		self.learning_rate = 0.1
+		self.learning_rate = 0.01
 
 	def readData(self,dataFile):
 		with open(dataFile) as df:
@@ -73,7 +73,7 @@ class DeepPong:
 	def MiniBatchGD(self,Epochs):
 		# self.data = np.array(self.data)
 		N = 10000
-		n = 2000
+		n = 500
 		printProgressBar(0, Epochs, prefix = 'Training:', suffix = 'Complete', length = 50)
 		for e in range(Epochs):
 			np.random.shuffle(self.data)
