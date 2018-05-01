@@ -1,40 +1,32 @@
 import numpy as np
 import copy
 
+
 def Affine_Forward(A,W,b):
 	cache = (A,W,b)
-	n,d,d_p = len(A), len(W[0]), len(W)
-	Z = np.zeros((n,d))
-	for i in range(n):
-		for j in range(d):
-			for k in range(d_p):
-				Z[i][j] += A[i][k] *W[k][j]
-			Z[i][j] += b[j]
+	B = []
+	for i in range(len(A)):
+		B.append(b)
+	Z = np.matmul(A,W) + B
 	return Z,cache
+
 
 
 def ReLu_Forward(Z):
 	cache = copy.deepcopy(Z)
-	r,c = Z.shape
-	for i in range(r):
-		for j in range(c):
-			reLu = max(0, Z[i][j])
-			Z[i][j] =reLu
+	Z = np.maximum(0, Z)
 	return Z,cache
+
 
 def Affine_Backward(dZ, cache):
 	A,W = cache[0],cache[1]
+	A_T = np.transpose(A)
+	W_T = np.transpose(W)
 	I,K,J = len(dZ), len(W), len(W[0])
-	dA,dW,db = np.zeros((I,K)), np.zeros((K,J)), np.zeros(J)
-	for i in range (I):
-		for k in range(K):
-			for j in range(J):
-				dA[i][k] += dZ[i][j]*W[k][j]
+	db =np.zeros(J)
 
-	for k in range(K):
-		for j in range(J):
-			for i in range(I):
-				dW[k][j] += A[i][k]*dZ[i][j]
+	dA = np.matmul(dZ,W_T)
+	dW = np.matmul(A_T,dZ)
 
 	for j in range(J):
 		for i in range(I):
@@ -44,15 +36,7 @@ def Affine_Backward(dZ, cache):
 
 
 def ReLu_Backward(dA, cache):
-	dZ = dA
-	r,c = dA.shape
-	for i in range(r):
-		for j in range(c):
-			reLu = dA[i][j]
-			if(cache[i][j] < 0):
-				reLu = 0
-			dZ[i][j] = reLu	
-
+	dZ =  np.where(cache > 0,dA,0)
 	return dZ
 
 
@@ -61,21 +45,14 @@ def Cross_Entropy(F,y,n):
 	dF = np.zeros((I,J))
 	loss =0
 	for i in range(I):
-		Y = y[i]
-		Y = int(Y)
-		middle_sum = 0
-		for k in range(C):
-			middle_sum += np.exp(F[i][k])
-
-		middle_sum = np.log(middle_sum)
+		Y = int(y[i])
+		middle_sum = np.log(np.sum(np.exp(F[i])))
 		loss += F[i][Y] - middle_sum
 	loss = (-1/n)*loss
 
 	for i in range(I):
 		for j in range(J):
-			denom = 0 
-			for k in range(C):
-				denom += np.exp(F[i][k])
+			denom = np.sum(np.exp(F[i]))
 			indicator = 0
 			if(j == y[i]):
 				indicator = 1 
@@ -127,7 +104,7 @@ def Cross_Entropy(F,y,n):
 # )
 # b= (0.699479275318, 0.297436950855, 0.813797819702, 0.396505740847 )
 
-# # Z,cache = Affine_Forward(A,W,b)
+# Z,cache = Affine_Forward(A,W,b)
 # # print(Z)
 
 # dZ = (
