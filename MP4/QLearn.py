@@ -11,6 +11,7 @@ Num_States = 10369	# 12*12*3*2*12 +1<---  how to get num states
 alpha = 0.2
 gamma = 0.2
 
+ # α(N)=C/(C+N(s,a))
 
 class QLearn:
 
@@ -81,7 +82,7 @@ class QLearn:
 		return score
 
 	def train(self):
-		Iterations = 50000
+		Iterations = 500000
 		printProgressBar(0, Iterations, prefix = 'Training:', suffix = 'Complete', length = 50)
 		for i in range(Iterations):
 			s = self.play(1)
@@ -99,13 +100,17 @@ class QLearn:
 
 	def test(self):
 		num_success = 0
+		total = 0
 		for i in range(200):
 			s = self.play(0)
+			total += s		
 			if (s >= 9):
 				print('game', i, 'score: ' , s)
 				num_success += 1
 			self.mdp.init_envvironment()
 
+		average = total/200
+		print('Average Score: ', average)
 		print('number of successful games: ', num_success)
 
 	def test_ec(self):
@@ -128,8 +133,8 @@ class QLearn:
 Q = QLearn()
 Q.train()
 Q.test()
-Q.train_ec()
-Q.test_ec()
+# Q.train_ec()
+# Q.test_ec()
 
 
 
