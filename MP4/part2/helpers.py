@@ -4,24 +4,21 @@ import copy
 
 def Affine_Forward(A,W,b):
 	cache = (A,W,b)
-	B = []
-	for i in range(len(A)):
-		B.append(b)
-	Z = np.matmul(A,W) + B
+	Z = np.matmul(A,W) + b
 	return Z,cache
 
 
 
 def ReLu_Forward(Z):
-	cache = copy.deepcopy(Z)
-	Z = np.maximum(0, Z)
-	return Z,cache
+	A = np.maximum(0, Z)
+	return A,Z
 
 
 def Affine_Backward(dZ, cache):
 	A,W = cache[0],cache[1]
 	A_T = np.transpose(A)
 	W_T = np.transpose(W)
+	dZ_T = np.transpose(dZ)
 	I,K,J = len(dZ), len(W), len(W[0])
 	db =np.zeros(J)
 
@@ -29,9 +26,7 @@ def Affine_Backward(dZ, cache):
 	dW = np.matmul(A_T,dZ)
 
 	for j in range(J):
-		for i in range(I):
-			db[j] += dZ[i][j]
-
+		db[j]= np.sum(dZ_T[j])
 	return dA,dW,db
 
 
@@ -105,7 +100,7 @@ def Cross_Entropy(F,y,n):
 # b= (0.699479275318, 0.297436950855, 0.813797819702, 0.396505740847 )
 
 # Z,cache = Affine_Forward(A,W,b)
-# # print(Z)
+# print(Z)
 
 # dZ = (
 # (0.762206394222, 0.162545745272, 0.76347072371, 0.385063180156 ),
@@ -141,7 +136,7 @@ def Cross_Entropy(F,y,n):
 # )
 # Z = np.array(Z)
 # A,c = ReLu_Forward(Z)
-# print(A)
+# # print(A)
 
 # dA = (
 # (0.61463791745, 0.138201477229, -0.185633405548, -0.86166600909 ),
