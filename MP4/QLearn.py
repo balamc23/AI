@@ -8,8 +8,9 @@ import copy
 
 
 Num_States = 10369	# 12*12*3*2*12 +1<---  how to get num states
-alpha = 0.2
+# alpha = 0.2
 gamma = 0.2
+C = 50
 
  # α(N)=C/(C+N(s,a))
 
@@ -17,6 +18,7 @@ class QLearn:
 
 	def  __init__(self):
 		self.Qtable = {}
+		self.N = {}
 		self.Qtable_ec = {}
 		self.mdp = MDP()
 		self.mdp_ec = MDP_EC()
@@ -26,6 +28,7 @@ class QLearn:
 					for y_vel in (-1,0,1):
 						for paddle_y in range(12):
 							self.Qtable[(x_pos,y_pos,x_vel,y_vel,paddle_y)] = [0,0,0]
+							self.N[(x_pos,y_pos,x_vel,y_vel,paddle_y)] = [0,0,0]
 
 	def play(self,train):
 		score = 0
@@ -36,12 +39,16 @@ class QLearn:
 
 			action = self.Qtable[state].index(max(self.Qtable[state]))
 
+			self.N[state][action] += 1
+
 			R = self.mdp.update_environment(action)
 
 			new_state = self.mdp.get_d_state()
 
 			if(train == 1):
 				x = self.Qtable[state][action]
+				N = self.N[state][action]
+				alpha = C/(C +N)
 				#misses paddle
 				if(R < 0):
 					x_next = 0			# note sure if setting this to 0 is the right move
@@ -63,12 +70,16 @@ class QLearn:
 
 			action = self.Qtable_ec[state].index(max(self.Qtable_ec[state]))
 
+			self.N[state][action] += 1
+
 			R = self.mdp_ec.update_environment(action)
 
 			new_state = self.mdp_ec.get_d_state()
 
 			if(train == 1):
 				x = self.Qtable_ec[state][action]
+				N = self.N[state][action]
+				alpha = C/(C +N)
 				#misses paddle
 				if(R < 0):
 					x_next = 0			# note sure if setting this to 0 is the right move
