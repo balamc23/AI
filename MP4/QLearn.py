@@ -113,7 +113,7 @@ class QLearn:
 			s = self.play(1,i)
 			self.mdp.init_envvironment()
 			printProgressBar(i + 1, Iterations, prefix = 'Training:', suffix = 'Complete', length = 50)
-			if(i%2000 == 0 or i == Iterations-1):
+			if(i%1000 == 0 or i == Iterations-1):
 				num_success = 0
 				total = 0
 				for j in range(200):
@@ -135,7 +135,7 @@ class QLearn:
 			s = self.play_ec(1,i)
 			self.mdp_ec.init_envvironment()
 			printProgressBar(i + 1, Iterations, prefix = 'Training:', suffix = 'Complete', length = 50)
-			if(i%2000 == 0 or i == Iterations-1):
+			if(i%1000 == 0 or i == Iterations-1):
 				num_success = 0
 				total = 0
 				for j in range(200):
