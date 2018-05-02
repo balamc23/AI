@@ -28,13 +28,23 @@ class MarkovDecisionProcess:
 		U = np.random.uniform(-0.015, 0.015)
 		V = np.random.uniform(-0.03, 0.03)
 
+		point_0 = (self.ball_x,self.ball_y)
+
 		self.ball_x += self.velocity_x
 		self.ball_y += self.velocity_y
 
+		point_1 = (self.ball_x,self.ball_y)
+	
+		slope = (point_1[1]-point_0[1])/(point_1[0]-point_0[0])
+
+		y_in_line = slope*(1 -point_0[0]) +point_0[1]
+	
 		self.paddle_y += self.actions[action]
+
 		if(self.paddle_y < 0):
 			self.paddle_y = 0
-
+		if(self.paddle_y > 0.8):
+			self.paddle_y = 0.8
 
 		if(self.ball_y < 0):
 			self.ball_y = -self.ball_y
@@ -48,7 +58,7 @@ class MarkovDecisionProcess:
 			self.ball_x = -self.ball_x
 			self.velocity_x = -self.velocity_x	
 			# return R
-		if(self.ball_x > 1 and (self.ball_y >= self.paddle_y and self.ball_y <= self.paddle_y + self.paddle_height)):
+		if(self.ball_x > 1 and (y_in_line >= self.paddle_y and y_in_line <= self.paddle_y + self.paddle_height) ):
 			R = 1
 			self.ball_x = 2 *1 - self.ball_x
 			if(abs(self.velocity_x + U) < 1):
@@ -58,7 +68,7 @@ class MarkovDecisionProcess:
 			if(abs(self.velocity_y + V) <1):
 				self.velocity_y = self.velocity_y + V
 			# return R
-		if(self.ball_x > 1 and (self.ball_y <= self.paddle_y or self.ball_y >= self.paddle_y + self.paddle_height)):
+		if(self.ball_x > 1):	# and (self.ball_y <= self.paddle_y or self.ball_y >= self.paddle_y + self.paddle_height)):
 			R = -1
 			# return R
 
